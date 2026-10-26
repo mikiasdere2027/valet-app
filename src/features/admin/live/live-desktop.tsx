@@ -66,8 +66,10 @@ function DesktopEventRow({
       aria-current={selected || undefined}
       onClick={onSelect}
       className={cn(
-        "flex w-full flex-col gap-2.5 border-0 px-6 py-4 text-left text-fg transition-transform duration-160 active:scale-97",
-        selected ? "bg-surface shadow-[inset_3px_0_0_var(--accent)]" : "bg-transparent",
+        "flex w-full flex-col gap-2.5 rounded-r16 border-0 px-4 py-3.5 text-left text-fg transition-[transform,background-color] duration-160 active:scale-98",
+        selected
+          ? "bg-surface shadow-[inset_0_0_0_1px_var(--line)]"
+          : "bg-transparent hover:bg-surface/60",
       )}
     >
       <div className="flex w-full items-start gap-2.5">
@@ -148,7 +150,7 @@ export function LiveDesktop({ board }: { board: LiveBoard }) {
       </div>
 
       <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_21.25rem] gap-5 px-8 pt-5 pb-6">
-        <section aria-label="Events" className={cn(PANE, CARD, "py-2")}>
+        <section aria-label="Events" className={cn(PANE, CARD, "flex flex-col gap-1 p-2")}>
           {board.summaries.map((event) => (
             <DesktopEventRow
               key={event.id}
