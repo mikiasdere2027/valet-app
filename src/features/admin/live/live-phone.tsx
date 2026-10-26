@@ -124,7 +124,7 @@ export function LivePhone({ board }: { board: LiveBoard }) {
                     )}
                   >
                     <AttentionCard
-                      variant="glass"
+                      variant="solid"
                       primary="bad"
                       tone={item.tone}
                       icon={item.icon}
@@ -133,7 +133,7 @@ export function LivePhone({ board }: { board: LiveBoard }) {
                       selfie={item.selfie}
                       selfieUrl={item.selfieUrl}
                       actions={attentionActions(item, board.run)}
-                      className="gap-3.5 p-4"
+                      className="gap-3.5 rounded-card p-4"
                     />
                   </div>
                 ))}

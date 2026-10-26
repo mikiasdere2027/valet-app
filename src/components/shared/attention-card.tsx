@@ -11,7 +11,8 @@ const TONE = {
   info: "bg-info-soft text-info",
 } as const
 
-type AttentionAction = { label: string; onClick: () => void }
+/** With an icon, the action is a round icon-only button (the label becomes its accessible name). */
+type AttentionAction = { label: string; onClick: () => void; icon?: IconName }
 
 type AttentionCardProps = {
   tone: keyof typeof TONE
@@ -20,11 +21,14 @@ type AttentionCardProps = {
   title: string
   /** Where, since when, how long unresolved. */
   meta: string
-  /** Up to three in-place actions; the first is the strong one, the rest are accent text. */
+  /**
+   * Up to three in-place actions. Icon actions come first as round buttons; of the rest, the
+   * first is the strong one and the others are accent text.
+   */
   actions: [AttentionAction, AttentionAction?, AttentionAction?]
   /**
-   * `glass` is the Live Board phone card; `solid` the Design System sheet; `plain` sits flat
-   * inside another card (desktop attention column), so there is no card on a card.
+   * `solid` is a white card like the invoice (Live Board phone, Design System sheet); `glass`
+   * the translucent card; `plain` sits flat inside another card (desktop attention column).
    */
   variant?: "solid" | "glass" | "plain"
   /** Fill of the first (strong) action: ink, or brick red for the Live Board attention cards. */
@@ -53,12 +57,13 @@ export function AttentionCard({
   className,
 }: AttentionCardProps) {
   const compact = density === "compact"
+  const present = actions.filter((action): action is AttentionAction => Boolean(action))
   return (
     <div
       className={cn(
         "flex flex-col",
         variant === "glass" && "rounded-card glass-card",
-        variant === "solid" && "border border-line bg-elev",
+        variant === "solid" && "border border-line bg-elev shadow-card-line",
         compact ? "gap-3 rounded-r20 p-4" : "gap-3.5 p-4.5",
         variant === "solid" && !compact && "rounded-card",
         className,
@@ -99,8 +104,22 @@ export function AttentionCard({
         )}
       </div>
       <div className={cn("flex", compact ? "gap-1.5" : "gap-2")}>
-        {actions
-          .filter((action): action is AttentionAction => Boolean(action))
+        {present
+          .filter((action) => action.icon)
+          .map((action) => (
+            <Button
+              key={action.label}
+              variant="secondary"
+              size="compact"
+              aria-label={action.label}
+              className={cn("flex-none px-0 text-accent-text", compact ? "size-9.5" : "size-11")}
+              onClick={action.onClick}
+            >
+              {action.icon && <Icon name={action.icon} filled size={compact ? 18 : 20} />}
+            </Button>
+          ))}
+        {present
+          .filter((action) => !action.icon)
           .map((action, i) => (
             <Button
               key={action.label}
