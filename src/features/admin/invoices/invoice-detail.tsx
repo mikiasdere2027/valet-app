@@ -9,14 +9,13 @@ import type { InvoiceDetail as InvoiceData } from "@/lib/data"
 import { formatHoursDecimal, formatRate } from "@/lib/money/format"
 import { cn } from "@/lib/utils"
 
-import { AdminPage } from "../common/admin-page"
+import { AdminHead, AdminPage } from "../common/admin-page"
 import { ErrorNotice, QueryState } from "../data/query-state"
 import { useInvoice, useSendInvoice, useSession } from "../data/queries"
 import {
   ACTION_BAR,
   InvoiceDetails,
   InvoiceFacts,
-  InvoiceTopBar,
   Money,
   splitInvoiceNumber,
 } from "./invoice-parts"
@@ -28,19 +27,23 @@ export function InvoiceDetail() {
   const id = useSearchParams().get("id") ?? undefined
   const invoice = useInvoice(id)
   return (
-    <>
+    <AdminPage>
       {invoice.data && (
-        <InvoiceTopBar
-          crumb={splitInvoiceNumber(invoice.data.number).number}
+        // The card already names the venue on phone, so the heading lives in the top bar only.
+        <AdminHead
+          inline={false}
           title={invoice.data.venue}
+          crumb={{
+            label: "Invoices",
+            href: "/admin/invoices",
+            current: splitInvoiceNumber(invoice.data.number).number,
+          }}
         />
       )}
-      <AdminPage className="tablet:pt-6 desktop:pt-8">
-        <QueryState query={invoice} rows={3}>
-          {(data) => <InvoiceBody invoice={data} />}
-        </QueryState>
-      </AdminPage>
-    </>
+      <QueryState query={invoice} rows={3}>
+        {(data) => <InvoiceBody invoice={data} />}
+      </QueryState>
+    </AdminPage>
   )
 }
 

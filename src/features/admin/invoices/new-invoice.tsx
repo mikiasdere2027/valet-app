@@ -12,7 +12,7 @@ import { FIELD_CONTROL, FormField } from "../common/form-field"
 import { ErrorNotice } from "../data/query-state"
 import { useCreateInvoice, useVenues } from "../data/queries"
 import { halfMonth, type Half } from "./half-month"
-import { ACTION_BAR, InvoiceTopBar } from "./invoice-parts"
+import { ACTION_BAR } from "./invoice-parts"
 
 const PRESETS: { key: Half; label: string }[] = [
   { key: "last", label: "Last half-month" },
@@ -38,93 +38,86 @@ export function NewInvoice() {
   }
 
   return (
-    <>
-      <InvoiceTopBar crumb="New" title="New invoice" />
-      <AdminPage className="tablet:pt-6 desktop:pt-8">
-        <div className="tablet:hidden">
-          <AdminHead
-            title="New invoice"
-            sub="Built from approved hours. Hours still in review are left out"
-          />
-        </div>
-        <p className="m-0 hidden text-15 text-fg-2 tablet:block">
-          Built from approved hours. Hours still in review are left out.
-        </p>
-        <form
-          className={cn(FORM, "pb-24 desktop:pb-0")}
-          onSubmit={(e) => {
-            e.preventDefault()
-            if (!ready) return
-            create.mutate(
-              { venueId: venue, periodStart: start, periodEnd: end },
-              { onSuccess: ({ id }) => router.replace(`/admin/invoices/detail?id=${id}`) },
-            )
-          }}
-        >
-          <FormField label="Venue" icon="location_on" htmlFor="i-venue">
-            <select
-              id="i-venue"
-              value={venue}
-              onChange={(e) => setVenueId(e.target.value)}
-              className={FIELD_CONTROL}
-            >
-              {(venues.data ?? []).map((v) => (
-                <option key={v.id} value={v.id}>
-                  {v.name}
-                </option>
-              ))}
-            </select>
-            <Icon name="expand_more" size={22} className="text-fg-2" />
-          </FormField>
-          <div className="flex gap-2.5">
-            <FormField label="From" icon="calendar_month" htmlFor="i-start">
-              <input
-                id="i-start"
-                type="date"
-                required
-                value={start}
-                onChange={(e) => setStart(e.target.value)}
-                className={FIELD_CONTROL}
-              />
-            </FormField>
-            <FormField label="To" icon="calendar_month" htmlFor="i-end">
-              <input
-                id="i-end"
-                type="date"
-                required
-                min={start || undefined}
-                value={end}
-                onChange={(e) => setEnd(e.target.value)}
-                className={FIELD_CONTROL}
-              />
-            </FormField>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {PRESETS.map((preset) => (
-              <Button
-                key={preset.key}
-                type="button"
-                variant="secondary"
-                size="xs"
-                onClick={() => pick(preset.key)}
-              >
-                {preset.label}
-              </Button>
+    <AdminPage>
+      <AdminHead
+        title="New invoice"
+        sub="Built from approved hours. Hours still in review are left out"
+        crumb={{ label: "Invoices", href: "/admin/invoices", current: "New" }}
+      />
+      <form
+        className={cn(FORM, "pb-24 desktop:pb-0")}
+        onSubmit={(e) => {
+          e.preventDefault()
+          if (!ready) return
+          create.mutate(
+            { venueId: venue, periodStart: start, periodEnd: end },
+            { onSuccess: ({ id }) => router.replace(`/admin/invoices/detail?id=${id}`) },
+          )
+        }}
+      >
+        <FormField label="Venue" icon="location_on" htmlFor="i-venue">
+          <select
+            id="i-venue"
+            value={venue}
+            onChange={(e) => setVenueId(e.target.value)}
+            className={FIELD_CONTROL}
+          >
+            {(venues.data ?? []).map((v) => (
+              <option key={v.id} value={v.id}>
+                {v.name}
+              </option>
             ))}
-          </div>
-          {create.error && <ErrorNotice message={create.error.message} />}
-          <div className={ACTION_BAR}>
+          </select>
+          <Icon name="expand_more" size={22} className="text-fg-2" />
+        </FormField>
+        <div className="flex gap-2.5">
+          <FormField label="From" icon="calendar_month" htmlFor="i-start">
+            <input
+              id="i-start"
+              type="date"
+              required
+              value={start}
+              onChange={(e) => setStart(e.target.value)}
+              className={FIELD_CONTROL}
+            />
+          </FormField>
+          <FormField label="To" icon="calendar_month" htmlFor="i-end">
+            <input
+              id="i-end"
+              type="date"
+              required
+              min={start || undefined}
+              value={end}
+              onChange={(e) => setEnd(e.target.value)}
+              className={FIELD_CONTROL}
+            />
+          </FormField>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {PRESETS.map((preset) => (
             <Button
-              type="submit"
-              variant="strong"
-              className="flex-1 text-17"
-              disabled={!ready || create.isPending}
+              key={preset.key}
+              type="button"
+              variant="secondary"
+              size="xs"
+              onClick={() => pick(preset.key)}
             >
-              Create draft
+              {preset.label}
             </Button>
-          </div>
-        </form>
-      </AdminPage>
-    </>
+          ))}
+        </div>
+        {create.error && <ErrorNotice message={create.error.message} />}
+        <div className={ACTION_BAR}>
+          <Button
+            type="submit"
+            variant="strong"
+            className="flex-1 text-17"
+            disabled={!ready || create.isPending}
+          >
+            Create draft
+          </Button>
+        </div>
+      </form>
+    </AdminPage>
   )
 }
