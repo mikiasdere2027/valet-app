@@ -27,7 +27,7 @@ type AttentionCardProps = {
    * inside another card (desktop attention column), so there is no card on a card.
    */
   variant?: "solid" | "glass" | "plain"
-  /** Fill of the first (strong) action: ink, or brick red for the desktop attention column. */
+  /** Fill of the first (strong) action: ink, or brick red for the Live Board attention cards. */
   primary?: "fg" | "bad"
   /** `compact` is the desktop attention column: smaller type and 38 px buttons. */
   density?: "default" | "compact"
