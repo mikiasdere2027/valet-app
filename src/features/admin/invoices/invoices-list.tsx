@@ -66,7 +66,6 @@ function ClientInvoices() {
     <QueryState query={invoices} rows={4}>
       {(list) => (
         <div className="flex flex-col gap-5">
-          <InvoiceStats list={list} />
           <div className="flex flex-col gap-3.5">
             <DataHead columns={["Venue · period", "Hours", "Amount", "Status"]} />
             <div className="flex flex-col border-t border-line">
@@ -173,6 +172,7 @@ function SendToAll() {
 export function InvoicesList() {
   const router = useRouter()
   const [tab, setTab] = useState<Tab>("client")
+  const invoices = useInvoices()
 
   const tabs = [
     { value: "client" as const, label: "Client invoices" },
@@ -182,24 +182,28 @@ export function InvoicesList() {
   return (
     <AdminPage>
       <AdminHead title="Invoices" sub="Drafted when an event's hours are approved" />
-      <div className="flex items-center justify-between gap-3">
-        <PillTabs label="View" items={tabs} value={tab} onValueChange={setTab} />
-        {tab === "client" ? (
-          <Button
-            variant="accent"
-            size="sm"
-            className="h-11.5 flex-1 gap-1.5 pr-5 pl-3.5 text-15 tablet:flex-none"
-            onClick={() => router.push("/admin/invoices/new")}
-          >
-            <Icon name="add" size={22} />
-            <span className="tablet:hidden">New</span>
-            <span className="hidden tablet:inline">New invoice</span>
-          </Button>
-        ) : (
-          <SendToAll />
-        )}
+      {invoices.data && <InvoiceStats list={invoices.data} />}
+      {/* Desktop: tabs and table in one white card (Regency mockup); phone: flat on the page. */}
+      <div className="flex flex-col gap-5 desktop:rounded-r24 desktop:border desktop:border-line desktop:bg-elev desktop:p-6 desktop:shadow-card-line">
+        <div className="flex items-center justify-between gap-3">
+          <PillTabs label="View" items={tabs} value={tab} onValueChange={setTab} />
+          {tab === "client" ? (
+            <Button
+              variant="accent"
+              size="sm"
+              className="h-11.5 flex-1 gap-1.5 pr-5 pl-3.5 text-15 tablet:flex-none"
+              onClick={() => router.push("/admin/invoices/new")}
+            >
+              <Icon name="add" size={22} />
+              <span className="tablet:hidden">New</span>
+              <span className="hidden tablet:inline">New invoice</span>
+            </Button>
+          ) : (
+            <SendToAll />
+          )}
+        </div>
+        {tab === "client" ? <ClientInvoices /> : <PayrollLoader />}
       </div>
-      {tab === "client" ? <ClientInvoices /> : <PayrollLoader />}
     </AdminPage>
   )
 }

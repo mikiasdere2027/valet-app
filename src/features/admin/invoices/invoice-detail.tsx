@@ -16,6 +16,7 @@ import {
   ACTION_BAR,
   InvoiceDetails,
   InvoiceFacts,
+  InvoiceTopBar,
   Money,
   splitInvoiceNumber,
 } from "./invoice-parts"
@@ -27,11 +28,19 @@ export function InvoiceDetail() {
   const id = useSearchParams().get("id") ?? undefined
   const invoice = useInvoice(id)
   return (
-    <AdminPage>
-      <QueryState query={invoice} rows={3}>
-        {(data) => <InvoiceBody invoice={data} />}
-      </QueryState>
-    </AdminPage>
+    <>
+      {invoice.data && (
+        <InvoiceTopBar
+          crumb={splitInvoiceNumber(invoice.data.number).number}
+          title={invoice.data.venue}
+        />
+      )}
+      <AdminPage className="tablet:pt-6 desktop:pt-8">
+        <QueryState query={invoice} rows={3}>
+          {(data) => <InvoiceBody invoice={data} />}
+        </QueryState>
+      </AdminPage>
+    </>
   )
 }
 
