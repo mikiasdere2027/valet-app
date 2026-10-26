@@ -12,20 +12,21 @@ import {
   UnderlineTabs,
   useShellMenu,
 } from "@/components/shared"
+import type { IconName } from "@/lib/icons/icon-names"
 import { cn } from "@/lib/utils"
 
 import { useNotifications } from "../data/queries"
 import { EventSheet } from "./event-sheet"
-import { attentionActions, LiveDot, SlotBar } from "./live-parts"
+import { attentionActions, PhoneStats, SlotBar } from "./live-parts"
 import { People, Timeline } from "./live-phone-tabs"
 import type { EventSummary } from "@/lib/live/model"
 import type { LiveBoard } from "./use-live-board"
 
 type Tab = "events" | "timeline" | "people"
-const TABS: { value: Tab; label: string }[] = [
-  { value: "events", label: "Events" },
-  { value: "timeline", label: "Timeline" },
-  { value: "people", label: "People" },
+const TABS: { value: Tab; label: string; icon: IconName }[] = [
+  { value: "events", label: "Events", icon: "calendar_month" },
+  { value: "timeline", label: "Timeline", icon: "schedule" },
+  { value: "people", label: "People", icon: "group" },
 ]
 
 const ROW_PRESS = "transition-[transform,background-color] duration-160 active:scale-97"
@@ -43,7 +44,8 @@ function EventRow({ event, onOpen }: { event: EventSummary; onOpen: () => void }
       <div className="flex w-full items-start gap-3">
         <div className="flex min-w-0 flex-1 flex-col gap-0.75">
           <span className="text-18 leading-x125 font-semibold">{event.venue}</span>
-          <span className="text-14 text-fg-2">
+          <span className="flex items-center gap-1.5 text-14 text-fg-2">
+            <Icon name="schedule" filled size={16} className="text-accent-text" />
             {event.time} · {event.rel}
           </span>
         </div>
@@ -92,33 +94,8 @@ export function LivePhone({ board }: { board: LiveBoard }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3">
-          <h1 className="m-0 flex items-baseline gap-3 font-normal">
-            <span className="inline-flex overflow-hidden font-display text-72 leading-x090 font-bold tracking-n050 tabular-nums">
-              <span key={pulse.need} className="inline-block animate-roll">
-                {pulse.need}
-              </span>
-            </span>
-            <span className="font-display text-26 leading-x100 font-semibold tracking-n020">
-              need you
-            </span>
-          </h1>
-          <div className="flex flex-wrap items-center gap-1.5 text-16 font-medium text-fg-2">
-            <LiveDot />
-            <span>·</span>
-            <span>
-              <b className="text-fg">{pulse.live}</b> events
-            </span>
-            <span>·</span>
-            <span>
-              <b className="text-fg">{pulse.onShift}</b> on shift
-            </span>
-            <span>·</span>
-            <span>
-              <b className="text-fg">{pulse.open}</b> open
-            </span>
-          </div>
-        </div>
+        <h1 className="sr-only">Live Board</h1>
+        <PhoneStats pulse={pulse} />
 
         <UnderlineTabs
           label="Live Board view"
@@ -126,7 +103,7 @@ export function LivePhone({ board }: { board: LiveBoard }) {
           value={tab}
           onValueChange={(v) => setTab(v as Tab)}
           className="gap-6"
-          listClassName="-mx-5 gap-6.5 px-5"
+          listClassName="-mx-5 gap-6 px-5"
         >
           <UnderlineTabPanel value="events" className="flex flex-col gap-6">
             {board.attention.length > 0 && (

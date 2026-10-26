@@ -1,8 +1,15 @@
 import { Icon, StatusBadge } from "@/components/shared"
 import { Button } from "@/components/ui/button"
+import type { IconName } from "@/lib/icons/icon-names"
 import { cn } from "@/lib/utils"
 import type { LiveSlot, SlotState } from "@/lib/data"
-import { SEGMENT_FILL, slotStatus, type ActionId, type AttentionItem } from "@/lib/live/model"
+import {
+  SEGMENT_FILL,
+  slotStatus,
+  type ActionId,
+  type AttentionItem,
+  type Pulse,
+} from "@/lib/live/model"
 
 export const HEALTH_TEXT = {
   ok: "text-ok",
@@ -14,10 +21,48 @@ export const HEALTH_TEXT = {
 /** Pulsing "Live" marker; the word keeps it from being colour alone. */
 export function LiveDot({ className }: { className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-1.5 font-semibold text-ok", className)}>
-      <span aria-hidden="true" className="size-2 animate-blink rounded-r9 bg-ok" />
+    <span
+      className={cn("inline-flex items-center gap-1.5 font-semibold text-accent-text", className)}
+    >
+      <span aria-hidden="true" className="size-2 animate-blink rounded-r9 bg-accent" />
       Live
     </span>
+  )
+}
+
+const STAT_CARD = "flex flex-col rounded-r18 border border-line bg-elev shadow-card-line"
+
+/**
+ * Phone pulse (Regency mockups): the "need you" count as a tall lead card, the other four
+ * counts in two rows beside it. Labels are the desktop KPI words, shortened to one line.
+ */
+export function PhoneStats({ pulse }: { pulse: Pulse }) {
+  const small: [number, string][] = [
+    [pulse.live, "Events live"],
+    [pulse.onShift, "On shift"],
+    [pulse.expected, "Expected"],
+    [pulse.open, "Open slots"],
+  ]
+  return (
+    <div className="grid grid-cols-[minmax(0,1.1fr)_repeat(2,minmax(0,1fr))] gap-2">
+      <div className={cn(STAT_CARD, "row-span-2 justify-between gap-1 p-3.5")}>
+        <LiveDot className="text-13" />
+        <span className="inline-flex overflow-hidden font-display text-72 leading-x090 font-bold tracking-n050 text-bad tabular-nums">
+          <span key={pulse.need} className="inline-block animate-roll">
+            {pulse.need}
+          </span>
+        </span>
+        <span className="text-15 font-medium">Need you</span>
+      </div>
+      {small.map(([value, label]) => (
+        <div key={label} className={cn(STAT_CARD, "gap-0.5 p-3")}>
+          <span className="font-display text-24 leading-x110 font-bold tracking-n030 tabular-nums">
+            {value}
+          </span>
+          <span className="truncate text-12 text-fg-2">{label}</span>
+        </div>
+      ))}
+    </div>
   )
 }
 
@@ -30,19 +75,17 @@ type SlotBarProps = {
   className?: string
 }
 
-/** One segment per person: on site, approval, late, expected; open slots are hatched. */
+/** One segment per person: on site, approval, late, expected; open slots are an empty track. */
 export function SlotBar({ bar, label, grow = true, className }: SlotBarProps) {
   return (
-    <div role="img" aria-label={label} className={cn("flex h-2.5 w-full gap-0.75", className)}>
+    <div role="img" aria-label={label} className={cn("flex h-1.5 w-full gap-1", className)}>
       {bar.map((state, i) => (
         <div
           key={i}
           style={grow ? { animationDelay: `${120 + i * 40}ms` } : undefined}
           className={cn(
-            "flex-1 rounded-r3 transition-colors duration-400",
-            state === "open"
-              ? "shadow-[inset_0_0_0_1.5px_var(--fg-3-line)] hatch-open"
-              : SEGMENT_FILL[state],
+            "flex-1 rounded-pill transition-colors duration-400",
+            state === "open" ? "bg-surface-2" : SEGMENT_FILL[state],
             grow && "origin-left animate-grow",
           )}
         />
@@ -131,7 +174,19 @@ export function SlotRow({ slot, onAssign, compact = false, onView }: SlotRowProp
   )
 }
 
-type CardAction = { label: string; onClick: () => void }
+type CardAction = { label: string; onClick: () => void; icon: IconName }
+
+/** Each action's glyph, so the card reads at a glance (Regency mockups). */
+const ACTION_ICON: Record<ActionId, IconName> = {
+  assign: "person_add",
+  broadcast: "sensors",
+  message: "chat_bubble",
+  "message-again": "chat_bubble",
+  call: "call",
+  replace: "sync",
+  approve: "check",
+  reject: "close",
+}
 
 /** The attention card's action tuple (first strong, then up to two secondary) for one item. */
 export function attentionActions(
@@ -141,6 +196,7 @@ export function attentionActions(
   const [a, b, c] = item.actions.map((action) => ({
     label: action.label,
     onClick: () => run(item, action.id),
+    icon: ACTION_ICON[action.id],
   }))
   if (!a) throw new Error(`Attention item ${item.key} has no actions`)
   return [a, b, c]

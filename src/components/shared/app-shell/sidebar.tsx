@@ -23,7 +23,11 @@ const DENSITY = {
   },
 } as const
 
-const BADGE_TONE = { fg: "bg-fg text-bg", warn: "bg-warn text-white" } as const
+const BADGE_TONE = {
+  fg: "bg-fg text-bg",
+  warn: "bg-warn text-white",
+  bad: "bg-bad text-white",
+} as const
 
 function SidebarBadge({ badge }: { badge: ShellBadge }) {
   return (

@@ -140,7 +140,7 @@ export function PhoneChrome({
                   {
                     key: "more",
                     label: "More",
-                    icon: "grid_view" as const,
+                    icon: "apps" as const,
                     onSelect: () => setMoreOpen(true),
                   },
                 ]
