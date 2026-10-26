@@ -67,7 +67,7 @@ function DesktopEventRow({
       onClick={onSelect}
       className={cn(
         "flex w-full flex-col gap-2.5 border-0 px-6 py-4 text-left text-fg transition-transform duration-160 active:scale-97",
-        selected ? "bg-surface shadow-[inset_3px_0_0_var(--fg)]" : "bg-transparent",
+        selected ? "bg-surface shadow-[inset_3px_0_0_var(--accent)]" : "bg-transparent",
       )}
     >
       <div className="flex w-full items-start gap-2.5">
@@ -89,9 +89,11 @@ function DesktopEventRow({
 }
 
 const PANE = "no-scrollbar min-h-0 overflow-y-auto"
+/** White card on the warm page ground, like the invoice page (Regency mockup). */
+const CARD = "rounded-r24 border border-line bg-elev shadow-card-line"
 const ACTION = "h-10 px-3.5 text-14 whitespace-nowrap"
 
-/** Live Board for 1100 px and wider: KPI strip, event list, roster and attention column. */
+/** Live Board for 1100 px and wider: KPI card, then event list, roster and attention as three cards. */
 export function LiveDesktop({ board }: { board: LiveBoard }) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [day, setDay] = useState<Day>("today")
@@ -100,8 +102,8 @@ export function LiveDesktop({ board }: { board: LiveBoard }) {
   const selected = board.summaries.find((e) => e.id === selectedId) ?? board.summaries[0]
 
   return (
-    <div className="relative flex h-full min-h-0 flex-col bg-bg">
-      <header className="flex items-center gap-4 border-b border-line px-8 pt-6 pb-5">
+    <div className="relative flex h-full min-h-0 flex-col">
+      <header className="flex items-center gap-4 px-8 pt-6 pb-5">
         <div className="flex flex-1 flex-col gap-1">
           <h1 className="m-0 font-display text-34 leading-x100 font-bold tracking-n030">
             Live Board
@@ -137,7 +139,7 @@ export function LiveDesktop({ board }: { board: LiveBoard }) {
         </Button>
       </header>
 
-      <div className="grid grid-cols-5 border-b border-line">
+      <div className={cn(CARD, "mx-8 grid grid-cols-5 overflow-hidden")}>
         <Kpi first value={pulse.need} label="Need you" tone="bad" />
         <Kpi value={pulse.live} label="Events live" />
         <Kpi value={pulse.onShift} label="On shift" />
@@ -145,8 +147,8 @@ export function LiveDesktop({ board }: { board: LiveBoard }) {
         <Kpi value={pulse.open} label="Open slots today" />
       </div>
 
-      <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_21.25rem]">
-        <section aria-label="Events" className={cn(PANE, "border-r border-line py-2")}>
+      <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_21.25rem] gap-5 px-8 pt-5 pb-6">
+        <section aria-label="Events" className={cn(PANE, CARD, "py-2")}>
           {board.summaries.map((event) => (
             <DesktopEventRow
               key={event.id}
@@ -160,7 +162,7 @@ export function LiveDesktop({ board }: { board: LiveBoard }) {
         {selected && (
           <section
             aria-label={`${selected.venue} roster`}
-            className={cn(PANE, "flex flex-col gap-3.5 border-r border-line px-6 py-5")}
+            className={cn(PANE, CARD, "flex flex-col gap-3.5 px-6 py-5")}
           >
             <div className="flex items-start gap-2.5">
               <div className="flex flex-1 flex-col gap-0.75">
@@ -213,7 +215,7 @@ export function LiveDesktop({ board }: { board: LiveBoard }) {
           </section>
         )}
 
-        <section aria-label="Attention" className={cn(PANE, "flex flex-col gap-3 bg-bg p-5")}>
+        <section aria-label="Attention" className={cn(PANE, CARD, "flex flex-col gap-3 p-5")}>
           <h2 className="m-0 text-18 font-semibold tracking-n010">Attention · {pulse.need}</h2>
           {board.attention.map((item) => (
             <div
