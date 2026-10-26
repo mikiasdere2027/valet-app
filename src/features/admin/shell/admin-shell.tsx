@@ -119,6 +119,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
       // The Live Board draws its own menu and search pills on phone.
       topBar={pathname !== "/admin"}
       tabBar={!NO_TAB_BAR.includes(pathname)}
+      // The same focused pages carry an "Invoices / …" breadcrumb bar instead of Back.
+      backRow={!NO_TAB_BAR.includes(pathname)}
       contentMax="max-w-290"
       notifications={{
         unread,

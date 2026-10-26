@@ -46,6 +46,8 @@ type AppShellProps = {
   topBar?: boolean
   /** Hide the phone tab bar on focused pages whose actions pin to the bottom instead. */
   tabBar?: boolean
+  /** Hide the wide-screen Back row on pages that draw their own breadcrumb. */
+  backRow?: boolean
   /** Width class of the wide-screen Back row, matching the page's content width. */
   contentMax?: string
   /** The bell and its drawer. Left out, the shell draws neither. */
@@ -95,6 +97,7 @@ export function AppShell({
   mode = "app",
   topBar = true,
   tabBar = true,
+  backRow = true,
   contentMax = "max-w-280",
   notifications,
   account,
@@ -136,7 +139,8 @@ export function AppShell({
           ) : (
             <RouteScreen
               back={
-                !isRoot && (
+                !isRoot &&
+                backRow && (
                   <div
                     className={cn(
                       "mx-auto box-border hidden w-full px-8 pt-6 tablet:block desktop:px-12 desktop:pt-7",

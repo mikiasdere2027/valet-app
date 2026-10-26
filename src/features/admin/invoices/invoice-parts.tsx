@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import Link from "next/link"
 
 import { Icon, StatusBadge } from "@/components/shared"
 import type { InvoiceDetail } from "@/lib/data"
@@ -90,7 +91,7 @@ export function InvoiceDetails({
   const rows: [string, ReactNode][] = []
   if (status) rows.push(["Status", <StatusBadge key="status" status={status} size="sm" />])
   rows.push(["Billed to", invoice.billedTo])
-  rows.push(invoice.eventId ? ["Event", first.slice(0, 2).join(" · ")] : ["Period", first[0]])
+  rows.push(invoice.eventId ? ["Event date", first[1] ?? first[0]] : ["Period", first[0]])
   rows.push(["Hours", formatHoursDecimal(minutes)])
   const [rate] = rates
   if (rates.size === 1 && rate !== undefined) rows.push(["Bill rate", formatRate(rate)])
@@ -107,5 +108,25 @@ export function InvoiceDetails({
         </div>
       ))}
     </dl>
+  )
+}
+
+/**
+ * Tablet and up: the page's white top bar (Regency mockup), a breadcrumb back to Invoices over the
+ * page title. Phones keep the floating Back button instead.
+ */
+export function InvoiceTopBar({ crumb, title }: { crumb: string; title: string }) {
+  return (
+    <div className="hidden border-b border-line bg-elev tablet:block">
+      <div className="mx-auto box-border flex max-w-290 flex-col gap-1 px-8 py-5 desktop:px-12">
+        <p className="m-0 text-13 text-fg-2">
+          <Link href="/admin/invoices" className="text-fg-2 no-underline hover:text-accent-text">
+            Invoices
+          </Link>{" "}
+          / {crumb}
+        </p>
+        <span className="font-display text-30 leading-x110 font-bold tracking-n025">{title}</span>
+      </div>
+    </div>
   )
 }
