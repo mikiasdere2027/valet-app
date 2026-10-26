@@ -1,6 +1,9 @@
-import { Icon } from "@/components/shared"
+import type { ReactNode } from "react"
+
+import { Icon, StatusBadge } from "@/components/shared"
+import type { InvoiceDetail } from "@/lib/data"
 import type { IconName } from "@/lib/icons/icon-names"
-import { formatMoney } from "@/lib/money/format"
+import { formatHoursDecimal, formatMoney, formatRate } from "@/lib/money/format"
 import { ADMIN_STATUS } from "@/lib/status/admin"
 import type { StatusSpec } from "@/lib/status/presets"
 import { cn } from "@/lib/utils"
@@ -67,5 +70,42 @@ export function InvoiceFacts({ period, event }: { period: string; event: boolean
         </li>
       ))}
     </ul>
+  )
+}
+
+/**
+ * Desktop side panel (Regency mockup): the invoice's facts as label / value rows, from what the
+ * detail already carries. The bill rate shows when every line shares one; terms while a draft.
+ */
+export function InvoiceDetails({
+  invoice,
+  status,
+}: {
+  invoice: InvoiceDetail
+  status: StatusSpec | null
+}) {
+  const first = invoice.period.split(" · ")
+  const rates = new Set(invoice.lines.map((line) => line.rateCents))
+  const minutes = invoice.lines.reduce((total, line) => total + line.minutes, 0)
+  const rows: [string, ReactNode][] = []
+  if (status) rows.push(["Status", <StatusBadge key="status" status={status} size="sm" />])
+  rows.push(["Billed to", invoice.billedTo])
+  rows.push(invoice.eventId ? ["Event", first.slice(0, 2).join(" · ")] : ["Period", first[0]])
+  rows.push(["Hours", formatHoursDecimal(minutes)])
+  const [rate] = rates
+  if (rates.size === 1 && rate !== undefined) rows.push(["Bill rate", formatRate(rate)])
+  if (!invoice.sent) rows.push(["Terms", "Due 14 days after sending"])
+  return (
+    <dl className="m-0 flex flex-col rounded-r20 border border-line bg-elev px-4.5 py-1 shadow-card-line">
+      {rows.map(([label, value]) => (
+        <div
+          key={label}
+          className="flex min-h-12 items-center justify-between gap-4 border-b border-line py-2 last:border-b-0"
+        >
+          <dt className="text-13 text-fg-2">{label}</dt>
+          <dd className="m-0 text-right text-14 font-medium [overflow-wrap:anywhere]">{value}</dd>
+        </div>
+      ))}
+    </dl>
   )
 }
