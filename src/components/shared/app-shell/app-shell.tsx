@@ -44,6 +44,8 @@ type AppShellProps = {
   mode?: "app" | "overlay" | "bare"
   /** Hide the floating phone top bar (the Live Board draws its own). */
   topBar?: boolean
+  /** Hide the phone tab bar on focused pages whose actions pin to the bottom instead. */
+  tabBar?: boolean
   /** Width class of the wide-screen Back row, matching the page's content width. */
   contentMax?: string
   /** The bell and its drawer. Left out, the shell draws neither. */
@@ -92,6 +94,7 @@ export function AppShell({
   isRoot,
   mode = "app",
   topBar = true,
+  tabBar = true,
   contentMax = "max-w-280",
   notifications,
   account,
@@ -167,6 +170,7 @@ export function AppShell({
               currentKey={currentKey}
               isRoot={isRoot}
               showTopBar={topBar}
+              showTabBar={tabBar}
               unread={notifications?.unread}
               accountMenu={Boolean(account)}
               onBack={onBack}

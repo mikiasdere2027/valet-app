@@ -27,6 +27,7 @@ type PhoneChromeProps = {
   currentKey: string | null
   isRoot: boolean
   showTopBar: boolean
+  showTabBar: boolean
   /** Unread notifications; undefined draws no bell. */
   unread?: number
   /** The avatar opens the account sheet instead of linking to Profile. */
@@ -45,6 +46,7 @@ export function PhoneChrome({
   currentKey,
   isRoot,
   showTopBar,
+  showTabBar,
   unread,
   accountMenu,
   onBack,
@@ -125,25 +127,27 @@ export function PhoneChrome({
         </div>
       )}
 
-      <TabBar
-        label="Main"
-        size={app}
-        current={moreOn ? "more" : currentKey}
-        className="absolute right-4 bottom-6 left-4 z-20"
-        items={[
-          ...tabs,
-          ...(moreItems
-            ? [
-                {
-                  key: "more",
-                  label: "More",
-                  icon: "grid_view" as const,
-                  onSelect: () => setMoreOpen(true),
-                },
-              ]
-            : []),
-        ]}
-      />
+      {showTabBar && (
+        <TabBar
+          label="Main"
+          size={app}
+          current={moreOn ? "more" : currentKey}
+          className="absolute right-4 bottom-6 left-4 z-20"
+          items={[
+            ...tabs,
+            ...(moreItems
+              ? [
+                  {
+                    key: "more",
+                    label: "More",
+                    icon: "grid_view" as const,
+                    onSelect: () => setMoreOpen(true),
+                  },
+                ]
+              : []),
+          ]}
+        />
+      )}
 
       {moreItems && (
         <ResponsiveSheet open={moreOpen} onOpenChange={setMoreOpen} title="More" titleHidden>

@@ -56,8 +56,14 @@ export function PersonCell({ name, sub }: { name: string; sub: string }) {
 }
 
 /** Status chip in a table cell. */
-export function StatusCell({ status }: { status: StatusSpec }) {
-  return <StatusBadge status={status} size="sm" className="self-center justify-self-start" />
+export function StatusCell({ status, className }: { status: StatusSpec; className?: string }) {
+  return (
+    <StatusBadge
+      status={status}
+      size="sm"
+      className={cn("self-center justify-self-start", className)}
+    />
+  )
 }
 
 /** Chevron that marks a row as navigable on phone, where the amount column is hidden. */

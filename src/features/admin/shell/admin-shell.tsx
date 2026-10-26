@@ -72,6 +72,9 @@ function navItems(badges: Badges) {
   }
 }
 
+/** Focused pages: their main actions pin to the bottom on phone, so the tab bar steps aside. */
+const NO_TAB_BAR = ["/admin/invoices/detail", "/admin/invoices/new"]
+
 /** Which nav item a path belongs to; detail pages keep their section highlighted. */
 function navKeyFor(path: string, keys: string[]): string {
   const section = path.split("/")[2]
@@ -115,6 +118,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
       isRoot={roots.includes(pathname)}
       // The Live Board draws its own menu and search pills on phone.
       topBar={pathname !== "/admin"}
+      tabBar={!NO_TAB_BAR.includes(pathname)}
       contentMax="max-w-290"
       notifications={{
         unread,
