@@ -215,18 +215,20 @@ export function LiveDesktop({ board }: { board: LiveBoard }) {
           </section>
         )}
 
-        <section aria-label="Attention" className={cn(PANE, CARD, "flex flex-col gap-3 p-5")}>
+        <section aria-label="Attention" className={cn(PANE, CARD, "flex flex-col gap-1 p-5")}>
           <h2 className="m-0 text-18 font-semibold tracking-n010">Attention · {pulse.need}</h2>
           {board.attention.map((item) => (
             <div
               key={item.key}
               className={cn(
-                "overflow-hidden rounded-r20",
+                "flex-none border-b border-line pb-1 last:border-b-0",
                 board.leaving[item.key] ? "animate-out" : "animate-fade",
               )}
             >
               <AttentionCard
                 density="compact"
+                variant="plain"
+                primary="bad"
                 tone={item.tone}
                 icon={item.icon}
                 title={item.title}

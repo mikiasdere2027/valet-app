@@ -1,6 +1,5 @@
 import { Icon, StatusBadge } from "@/components/shared"
 import { Button } from "@/components/ui/button"
-import type { IconName } from "@/lib/icons/icon-names"
 import { cn } from "@/lib/utils"
 import type { LiveSlot, SlotState } from "@/lib/data"
 import {
@@ -174,19 +173,7 @@ export function SlotRow({ slot, onAssign, compact = false, onView }: SlotRowProp
   )
 }
 
-type CardAction = { label: string; onClick: () => void; icon: IconName }
-
-/** Each action's glyph, so the card reads at a glance (Regency mockups). */
-const ACTION_ICON: Record<ActionId, IconName> = {
-  assign: "person_add",
-  broadcast: "sensors",
-  message: "chat_bubble",
-  "message-again": "chat_bubble",
-  call: "call",
-  replace: "sync",
-  approve: "check",
-  reject: "close",
-}
+type CardAction = { label: string; onClick: () => void }
 
 /** The attention card's action tuple (first strong, then up to two secondary) for one item. */
 export function attentionActions(
@@ -196,7 +183,6 @@ export function attentionActions(
   const [a, b, c] = item.actions.map((action) => ({
     label: action.label,
     onClick: () => run(item, action.id),
-    icon: ACTION_ICON[action.id],
   }))
   if (!a) throw new Error(`Attention item ${item.key} has no actions`)
   return [a, b, c]
