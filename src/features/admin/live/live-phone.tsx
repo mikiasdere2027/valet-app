@@ -31,31 +31,33 @@ const TABS: { value: Tab; label: string; icon: IconName }[] = [
 
 const ROW_PRESS = "transition-[transform,background-color] duration-160 active:scale-97"
 
+/**
+ * Phone event row, kept to two lines and the bar: venue and (only when something is wrong) its
+ * status, then time and fill. Relative time and the on-site/open breakdown live in the event
+ * sheet; the bar's label still says them in words.
+ */
 function EventRow({ event, onOpen }: { event: EventSummary; onOpen: () => void }) {
+  const problem = event.health.status.tone !== "ok"
   return (
     <button
       type="button"
       onClick={onOpen}
       className={cn(
-        "flex w-full animate-rise flex-col gap-3 border-0 border-b border-line bg-transparent py-4.5 text-left text-fg",
+        "flex w-full animate-rise flex-col gap-2.5 border-0 border-b border-line bg-transparent py-4 text-left text-fg",
         ROW_PRESS,
       )}
     >
       <div className="flex w-full items-start gap-3">
         <div className="flex min-w-0 flex-1 flex-col gap-0.75">
-          <span className="text-18 leading-x125 font-semibold">{event.venue}</span>
+          <span className="text-17 leading-x125 font-semibold">{event.venue}</span>
           <span className="flex items-center gap-1.5 text-14 text-fg-2">
             <Icon name="schedule" filled size={16} className="text-accent-text" />
-            {event.time} · {event.rel}
+            {event.time} · <span className="font-semibold text-fg">{event.filledOf}</span>
           </span>
         </div>
-        <StatusBadge status={event.health.status} size="sm" />
+        {problem && <StatusBadge status={event.health.status} size="sm" />}
       </div>
       <SlotBar bar={event.bar} label={event.legend} />
-      <div className="flex w-full justify-between text-14 font-medium text-fg-2">
-        <span>{event.legend}</span>
-        <span className="font-semibold text-fg">{event.filledOf}</span>
-      </div>
     </button>
   )
 }
