@@ -125,6 +125,7 @@ export function LivePhone({ board }: { board: LiveBoard }) {
                   >
                     <AttentionCard
                       variant="glass"
+                      primary="bad"
                       tone={item.tone}
                       icon={item.icon}
                       title={item.title}
