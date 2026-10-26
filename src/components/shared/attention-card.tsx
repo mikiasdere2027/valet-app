@@ -11,7 +11,7 @@ const TONE = {
   info: "bg-info-soft text-info",
 } as const
 
-type AttentionAction = { label: string; onClick: () => void; icon?: IconName }
+type AttentionAction = { label: string; onClick: () => void }
 
 type AttentionCardProps = {
   tone: keyof typeof TONE
@@ -22,8 +22,13 @@ type AttentionCardProps = {
   meta: string
   /** Up to three in-place actions; the first is the strong one, the rest are accent text. */
   actions: [AttentionAction, AttentionAction?, AttentionAction?]
-  /** `glass` is the Live Board phone card; `solid` the Design System sheet and desktop column. */
-  variant?: "solid" | "glass"
+  /**
+   * `glass` is the Live Board phone card; `solid` the Design System sheet; `plain` sits flat
+   * inside another card (desktop attention column), so there is no card on a card.
+   */
+  variant?: "solid" | "glass" | "plain"
+  /** Fill of the first (strong) action: ink, or brick red for the desktop attention column. */
+  primary?: "fg" | "bad"
   /** `compact` is the desktop attention column: smaller type and 38 px buttons. */
   density?: "default" | "compact"
   /** Shows the clock-in selfie thumbnail (approval requests). */
@@ -42,6 +47,7 @@ export function AttentionCard({
   actions,
   variant = "solid",
   density = "default",
+  primary = "fg",
   selfie = false,
   selfieUrl,
   className,
@@ -51,7 +57,8 @@ export function AttentionCard({
     <div
       className={cn(
         "flex flex-col",
-        variant === "glass" ? "rounded-card glass-card" : "border border-line bg-elev",
+        variant === "glass" && "rounded-card glass-card",
+        variant === "solid" && "border border-line bg-elev",
         compact ? "gap-3 rounded-r20 p-4" : "gap-3.5 p-4.5",
         variant === "solid" && !compact && "rounded-card",
         className,
@@ -97,12 +104,11 @@ export function AttentionCard({
           .map((action, i) => (
             <Button
               key={action.label}
-              variant={i === 0 ? "strong" : "ghost"}
+              variant={i > 0 ? "ghost" : primary === "bad" ? "destructive" : "strong"}
               size="compact"
               className={cn("flex-1", i > 0 && "text-accent-text", compact && "h-9.5 text-14")}
               onClick={action.onClick}
             >
-              {action.icon && <Icon name={action.icon} filled size={compact ? 18 : 20} />}
               {action.label}
             </Button>
           ))}
