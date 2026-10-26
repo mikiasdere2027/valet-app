@@ -334,3 +334,16 @@ Project-specific rules (device APIs, tokens only, component size) are ESLint rul
 - The hand-made period invoice (venue and dates) still works as a fallback. It records the events it billed (`invoice_events`), and those are never drafted again; events with their own invoice are left out of it.
 
 **Consequences.** Migrations 008–009. Lines are a snapshot like before. Early arrival still counts (the Hours screen shows the same total): D43.
+
+## ADR-020 — Regency website brand: Prompt, website logo, website palette
+
+**Date:** 2026-10-26 · **Status:** proposed (client direction: match the Regency website's font, logo and colors; owner to confirm)
+
+**Decision.**
+
+- **Type.** Prompt (the Regency website's typeface, weights 300–700) replaces Bricolage Grotesque, Onest and Geist Mono. `--ff`, `--fd` and `--fm` keep their roles but all name Prompt; anything set in `font-mono` gets tabular figures so columns and timers still line up. Supersedes the type part of D1.
+- **Logo.** The website's SVG marks replace `regency-logo.png`: the crest (`/brand/regency-crest.svg`) in square spots (app rail, phone pill, logo tiles) and the crest with wordmark (`/brand/regency-logo.svg`) in wide spots (page headers, invoices). Paths and sizes live in `src/lib/brand.ts`.
+- **Color (light theme).** Neutrals, lines and danger follow the website: ivory `--surface` `#F6F1E7`, `--surface-2` `#EEE6D6`, ink `--fg` / `--hero` `#0E0E10`, website muted `--fg-3` `#6D675D` (5.0:1 on surface, so D11 still holds), card border `--line` `#E8DFCC`, crimson `--bad` `#9E1B1E`. The ambient glow sits on the website's warm paper `#FBF8F2`, fading to white. The tenant accent is unchanged (its default is already the website gold); `--accent-text` stays `#7F611A` because the website's darker gold `#9D7A2C` is 4.0:1 on white, below AA for text.
+- Dark theme, `--ok`, `--warn` and `--info` are unchanged: the website has no dark mode or status colors.
+
+**Consequences.** One family to load instead of three. Prompt is wider than Bricolage, so dense headings were checked for overflow. `src/lib/tokens/meta.ts` updated with the new light values.

@@ -11,14 +11,14 @@ import { ResponsiveSheet } from "../responsive-sheet"
 import { TabBar } from "../tab-bar"
 import { useShellMenu } from "./menu-context"
 import { NotificationBell } from "./notification-bell"
-import type { ShellApp, ShellNavItem, ShellUser } from "./types"
+import type { ShellApp, ShellLogo, ShellNavItem, ShellUser } from "./types"
 
 const CIRCLE =
   "glass grid size-14 place-items-center rounded-pill border-0 text-fg transition-transform duration-160 active:scale-94"
 
 type PhoneChromeProps = {
   app: ShellApp
-  logo: { src: string; alt: string }
+  logo: ShellLogo
   title: string
   user: ShellUser
   tabItems: ShellNavItem[]
@@ -54,7 +54,13 @@ export function PhoneChrome({
 
   const brandPill = (
     <GlassPill>
-      <Image src={logo.src} alt="" width={54} height={30} className="h-7.5 w-auto" />
+      <Image
+        src={logo.src}
+        alt=""
+        width={logo.width}
+        height={logo.height}
+        className="h-7.5 w-auto"
+      />
       {title}
     </GlassPill>
   )

@@ -13,6 +13,7 @@ import { AdminPage, FORM } from "../common/admin-page"
 import { ErrorNotice, QueryState } from "../data/query-state"
 import { useInvoice, useSendInvoice, useSession } from "../data/queries"
 import { invoiceNumber, invoicePdf } from "./invoice-pdf"
+import { BRAND_LOGO } from "@/lib/brand"
 
 /** One invoice: lines from approved hours, total and send. `?id=` picks it (default: first draft). */
 export function InvoiceDetail() {
@@ -54,10 +55,10 @@ function InvoiceBody({ invoice }: { invoice: InvoiceData }) {
             <span className="text-15 text-fg-2">{invoice.period}</span>
           </div>
           <Image
-            src="/brand/regency-logo.png"
+            src={BRAND_LOGO.src}
             alt=""
-            width={79}
-            height={44}
+            width={BRAND_LOGO.width}
+            height={BRAND_LOGO.height}
             className="h-11 w-auto"
           />
         </div>

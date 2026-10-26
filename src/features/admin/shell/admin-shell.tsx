@@ -10,6 +10,7 @@ import { useNotificationChime } from "@/lib/platform/use-notification-chime"
 
 import { useMarkNotificationsRead, useNotifications, useSession } from "../data/queries"
 import { NotificationPanel } from "./notification-panel"
+import { BRAND_CREST } from "@/lib/brand"
 
 type Badges = { live: number; hours: number; inbox: number }
 
@@ -96,7 +97,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
   return (
     <AppShell
       app="admin"
-      logo={{ src: "/brand/regency-logo.png", alt: "Regency" }}
+      logo={{ ...BRAND_CREST, alt: "Regency" }}
       brand={{ title: "Regency", subtitle: "Dispatch" }}
       phoneTitle="Dispatch"
       user={{

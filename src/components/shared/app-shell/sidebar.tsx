@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { Icon } from "../icon"
 import { useShellMenu } from "./menu-context"
 import { NotificationBell } from "./notification-bell"
-import type { ShellApp, ShellBadge, ShellNavItem, ShellUser } from "./types"
+import type { ShellApp, ShellBadge, ShellLogo, ShellNavItem, ShellUser } from "./types"
 
 // The two apps differ slightly (Staff PWA.dc.html vs Admin.dc.html): item height, side padding,
 // desktop width and the brand block.
@@ -40,7 +40,7 @@ function SidebarBadge({ badge }: { badge: ShellBadge }) {
 
 type SidebarProps = {
   app: ShellApp
-  logo: { src: string; alt: string }
+  logo: ShellLogo
   brand: { title: string; subtitle?: string }
   items: ShellNavItem[]
   currentKey: string | null
@@ -88,7 +88,13 @@ export function Sidebar({
       )}
     >
       <div className={cn("flex items-center gap-2.5 px-2 pt-1", d.logoRow)}>
-        <Image src={logo.src} alt={logo.alt} width={64} height={36} className="h-9 w-auto" />
+        <Image
+          src={logo.src}
+          alt={logo.alt}
+          width={logo.width}
+          height={logo.height}
+          className="h-9 w-auto"
+        />
         <span className="hidden flex-col desktop:flex">
           <span
             className={cn(

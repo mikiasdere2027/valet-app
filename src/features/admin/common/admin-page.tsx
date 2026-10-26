@@ -39,7 +39,7 @@ export function AdminHead({ title, sub, cta }: AdminHeadProps) {
   )
 }
 
-/** Section heading inside a page (Bricolage 600 / 20 px). */
+/** Section heading inside a page (Prompt 600 / 20 px). */
 export function SectionTitle({ children }: { children: ReactNode }) {
   return <h2 className="m-0 font-display text-20 font-semibold tracking-n015">{children}</h2>
 }

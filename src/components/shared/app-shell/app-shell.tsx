@@ -11,11 +11,18 @@ import { NotificationDrawer } from "./notification-drawer"
 import { PhoneChrome } from "./phone-chrome"
 import { RouteScreen } from "./route-screen"
 import { Sidebar } from "./sidebar"
-import type { ShellAccount, ShellApp, ShellNavItem, ShellNotifications, ShellUser } from "./types"
+import type {
+  ShellAccount,
+  ShellApp,
+  ShellLogo,
+  ShellNavItem,
+  ShellNotifications,
+  ShellUser,
+} from "./types"
 
 type AppShellProps = {
   app: ShellApp
-  logo: { src: string; alt: string }
+  logo: ShellLogo
   /** Desktop sidebar brand block. */
   brand: { title: string; subtitle?: string }
   /** Phone top-bar title. */
