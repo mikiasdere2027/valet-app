@@ -47,15 +47,17 @@ function EventRow({ event, onOpen }: { event: EventSummary; onOpen: () => void }
         ROW_PRESS,
       )}
     >
-      <div className="flex w-full items-start gap-3">
-        <div className="flex min-w-0 flex-1 flex-col gap-0.75">
-          <span className="text-17 leading-x125 font-semibold">{event.venue}</span>
-          <span className="flex items-center gap-1.5 text-14 text-fg-2">
-            <Icon name="schedule" filled size={16} className="text-accent-text" />
-            {event.time} · <span className="font-semibold text-fg">{event.filledOf}</span>
-          </span>
+      <div className="flex w-full flex-col gap-1">
+        <div className="flex w-full items-start justify-between gap-3">
+          <span className="min-w-0 text-17 leading-x125 font-semibold">{event.venue}</span>
+          {problem && <StatusBadge status={event.health.status} size="sm" className="flex-none" />}
         </div>
-        {problem && <StatusBadge status={event.health.status} size="sm" />}
+        <span className="flex items-center gap-1.5 text-14 text-fg-2">
+          <Icon name="schedule" filled size={16} className="text-accent-text" />
+          <span>
+            {event.time} · <b className="font-semibold text-fg">{event.filledOf}</b>
+          </span>
+        </span>
       </div>
       <SlotBar bar={event.bar} label={event.legend} />
     </button>
