@@ -24,7 +24,7 @@ function navItems(badges: Badges) {
     phoneLabel: "Live",
     icon: "sensors",
     href: "/admin",
-    badge: badges.live > 0 ? { text: String(badges.live), tone: "warn" } : undefined,
+    badge: badges.live > 0 ? { text: String(badges.live), tone: "bad" } : undefined,
   }
   const EVENTS: ShellNavItem = {
     key: "events",
@@ -55,7 +55,7 @@ function navItems(badges: Badges) {
   const INBOX: ShellNavItem = {
     key: "inbox",
     label: "Inbox",
-    icon: "chat_bubble",
+    icon: "mail",
     href: "/admin/inbox",
     badge: count(badges.inbox),
   }

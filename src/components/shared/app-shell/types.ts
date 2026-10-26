@@ -7,7 +7,7 @@ export type ShellApp = "staff" | "admin"
 /** The tenant mark; width and height are its intrinsic size, so the box keeps its shape while loading. */
 export type ShellLogo = { src: string; alt: string; width: number; height: number }
 
-export type ShellBadge = { text: string; tone?: "fg" | "warn" }
+export type ShellBadge = { text: string; tone?: "fg" | "warn" | "bad" }
 
 export type ShellNavItem = {
   key: string

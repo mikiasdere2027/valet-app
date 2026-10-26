@@ -34,10 +34,11 @@ export function slotStatus(slot: Pick<LiveSlot, "state" | "facts">): StatusSpec 
 }
 
 /** Bar segment fill per state; open slots are hatched instead. */
+// On site is the brand accent (Regency, ADR-020); the bar's label says it in words.
 export const SEGMENT_FILL: Record<Exclude<SlotState, "open">, string> = {
-  onsite: "bg-ok",
-  flagged: "bg-ok",
-  override: "bg-ok",
+  onsite: "bg-accent",
+  flagged: "bg-accent",
+  override: "bg-accent",
   waiting: "bg-info",
   late: "bg-warn",
   due: "bg-fg-3-line",

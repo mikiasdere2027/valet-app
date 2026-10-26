@@ -11,7 +11,7 @@ const TONE = {
   info: "bg-info-soft text-info",
 } as const
 
-type AttentionAction = { label: string; onClick: () => void }
+type AttentionAction = { label: string; onClick: () => void; icon?: IconName }
 
 type AttentionCardProps = {
   tone: keyof typeof TONE
@@ -20,7 +20,7 @@ type AttentionCardProps = {
   title: string
   /** Where, since when, how long unresolved. */
   meta: string
-  /** Up to three in-place actions; the first is the strong one. */
+  /** Up to three in-place actions; the first is the strong one, the rest are accent text. */
   actions: [AttentionAction, AttentionAction?, AttentionAction?]
   /** `glass` is the Live Board phone card; `solid` the Design System sheet and desktop column. */
   variant?: "solid" | "glass"
@@ -51,7 +51,7 @@ export function AttentionCard({
     <div
       className={cn(
         "flex flex-col",
-        variant === "glass" ? "rounded-card glass-card" : "bg-surface",
+        variant === "glass" ? "rounded-card glass-card" : "border border-line bg-elev",
         compact ? "gap-3 rounded-r20 p-4" : "gap-3.5 p-4.5",
         variant === "solid" && !compact && "rounded-card",
         className,
@@ -97,11 +97,12 @@ export function AttentionCard({
           .map((action, i) => (
             <Button
               key={action.label}
-              variant={i === 0 ? "strong" : "elevated"}
+              variant={i === 0 ? "strong" : "ghost"}
               size="compact"
-              className={cn("flex-1", compact && "h-9.5 text-14")}
+              className={cn("flex-1", i > 0 && "text-accent-text", compact && "h-9.5 text-14")}
               onClick={action.onClick}
             >
+              {action.icon && <Icon name={action.icon} filled size={compact ? 18 : 20} />}
               {action.label}
             </Button>
           ))}
