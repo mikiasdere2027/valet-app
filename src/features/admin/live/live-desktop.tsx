@@ -105,7 +105,7 @@ export function LiveDesktop({ board }: { board: LiveBoard }) {
 
   return (
     <div className="relative flex h-full min-h-0 flex-col">
-      <header className="flex items-center gap-4 px-8 pt-6 pb-5">
+      <header className={cn(CARD, "mx-8 mt-6 mb-5 flex items-center gap-4 px-6 py-4.5")}>
         <div className="flex flex-1 flex-col gap-1">
           <h1 className="m-0 font-display text-34 leading-x100 font-bold tracking-n030">
             Live Board
