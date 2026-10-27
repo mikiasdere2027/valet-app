@@ -86,6 +86,23 @@ export function AdminInbox() {
   const selected = requested ?? (phone ? undefined : shown[0]?.id)
   const data = inbox.data
 
+  // Phone: the filters sit over the list; from tablet they live in the top bar.
+  const tabsFor = (className?: string) => (
+    <PillTabs
+      className={className}
+      label="Inbox"
+      items={tabs}
+      value={tab}
+      onValueChange={(next) => {
+        setPicked(next)
+        // The open thread belongs to the other tab: show that tab's first one instead.
+        if (requestedThread && requestedThread.announcement !== (next === "announcements")) {
+          router.replace("/admin/inbox")
+        }
+      }}
+    />
+  )
+
   return (
     <AdminPage>
       {!(phone && open) && (
@@ -97,26 +114,13 @@ export function AdminInbox() {
             icon: "campaign",
             onClick: () => router.push("/admin/inbox/announce"),
           }}
+          tools={tabsFor()}
         />
       )}
       <div className="grid items-start gap-7 tablet:grid-cols-[minmax(17.5rem,22.5rem)_minmax(0,1fr)]">
         {showList && (
           <div className="flex flex-col gap-3.5">
-            <PillTabs
-              label="Inbox"
-              items={tabs}
-              value={tab}
-              onValueChange={(next) => {
-                setPicked(next)
-                // The open thread belongs to the other tab: show that tab's first one instead.
-                if (
-                  requestedThread &&
-                  requestedThread.announcement !== (next === "announcements")
-                ) {
-                  router.replace("/admin/inbox")
-                }
-              }}
-            />
+            {tabsFor("tablet:hidden")}
             <div className="flex flex-col border-t border-line">
               <QueryState query={inbox} rows={4}>
                 {() =>
