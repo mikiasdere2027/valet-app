@@ -95,7 +95,7 @@ export function AttentionCard({
             style={selfieUrl ? { backgroundImage: `url(${selfieUrl})` } : undefined}
             className={cn(
               "flex-none overflow-hidden bg-cover bg-center",
-              compact ? "h-14 w-11 rounded-r10" : "h-15 w-12 rounded-r12",
+              compact ? "size-12 rounded-r12" : "size-14 rounded-r14",
               !selfieUrl && "grid place-items-center text-white/60 selfie-thumb",
             )}
           >
