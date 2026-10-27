@@ -11,9 +11,17 @@ import { cn } from "@/lib/utils"
 
 import { useTopBarSlot } from "./top-bar"
 
-/** Admin page column: 1160 px wide, 22 px rhythm (Admin Pages "page"). */
+/**
+ * Admin page column: up to 1160 px, 22 px rhythm (Admin Pages "page"), starting at the left edge
+ * with the top bar's 32 px inset, like the Live Board.
+ */
 export function AdminPage({ className, ...props }: ComponentProps<typeof PageContainer>) {
-  return <PageContainer className={cn("max-w-290 gap-5.5", className)} {...props} />
+  return (
+    <PageContainer
+      className={cn("mx-0 max-w-290 gap-5.5 tablet:px-8 desktop:px-8", className)}
+      {...props}
+    />
+  )
 }
 
 type AdminHeadProps = {
