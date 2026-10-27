@@ -92,7 +92,7 @@ function DesktopEventRow({
 
 const PANE = "no-scrollbar min-h-0 overflow-y-auto"
 /** White card on the warm page ground, like the invoice page (Regency mockup). */
-const CARD = "rounded-r24 border border-line bg-elev shadow-card-line"
+const CARD = "rounded-r24 border border-line bg-elev"
 const ACTION = "h-10 px-3.5 text-14 whitespace-nowrap"
 
 /** Live Board for 1100 px and wider: KPI card, then event list, roster and attention as three cards. */

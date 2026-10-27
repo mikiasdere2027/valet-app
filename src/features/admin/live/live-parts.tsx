@@ -30,7 +30,7 @@ export function LiveDot({ className }: { className?: string }) {
   )
 }
 
-const STAT_CARD = "flex flex-col rounded-r18 border border-line bg-elev shadow-card-line"
+const STAT_CARD = "flex flex-col rounded-r18 border border-line bg-elev"
 
 /**
  * Phone pulse (Regency mockups): the "need you" count as a tall lead card, the other four
