@@ -121,7 +121,7 @@ export function Sidebar({
             className={cn(
               "relative flex items-center justify-center gap-3 rounded-r14 text-15 transition-[background-color,box-shadow,transform] duration-200 active:scale-97 desktop:justify-start",
               d.item,
-              on ? "bg-chrome font-semibold text-fg shadow-float" : "font-medium text-fg-2",
+              on ? "bg-surface-2 font-semibold text-fg" : "font-medium text-fg-2 hover:bg-surface",
             )}
           >
             <Icon name={item.icon} filled size={24} />
