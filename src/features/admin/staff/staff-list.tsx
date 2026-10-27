@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, type ReactNode } from "react"
 
 import { Icon, PillTabs } from "@/components/shared"
 import type { StaffBucket, StaffList as StaffListData, StaffTab } from "@/lib/data"
@@ -20,8 +20,18 @@ function inTab(tab: StaffTab, bucket: StaffBucket): boolean {
 /** Staff directory: search, status tabs and a table that collapses to two columns on phone. */
 export function StaffList() {
   const [inviteOpen, setInviteOpen] = useState(false)
+  const [tab, setTab] = useState<StaffTab>("all")
   const staff = useStaff()
   const data = staff.data
+  const tabs = [
+    { value: "all" as const, label: "All" },
+    { value: "active" as const, label: "Active" },
+    { value: "invited" as const, label: "Invited", count: data?.invited || undefined },
+    { value: "alerts" as const, label: "Alerts off", count: data?.alertsOff || undefined },
+  ]
+  const tabsFor = (className?: string) => (
+    <PillTabs label="Show" items={tabs} value={tab} onValueChange={setTab} className={className} />
+  )
 
   return (
     <AdminPage>
@@ -33,24 +43,19 @@ export function StaffList() {
             : "…"
         }
         cta={{ label: "Invite", icon: "person_add", onClick: () => setInviteOpen(true) }}
+        tools={tabsFor()}
       />
       <QueryState query={staff} rows={6}>
-        {(list) => <Directory list={list} />}
+        {/* Phone: the filters sit under the heading; from tablet they live in the top bar. */}
+        {(list) => <Directory list={list} tab={tab} tabs={tabsFor("tablet:hidden")} />}
       </QueryState>
       <InviteSheet open={inviteOpen} onOpenChange={setInviteOpen} />
     </AdminPage>
   )
 }
 
-function Directory({ list }: { list: StaffListData }) {
-  const [tab, setTab] = useState<StaffTab>("all")
+function Directory({ list, tab, tabs }: { list: StaffListData; tab: StaffTab; tabs: ReactNode }) {
   const [query, setQuery] = useState("")
-  const tabs = [
-    { value: "all" as const, label: "All" },
-    { value: "active" as const, label: "Active" },
-    { value: "invited" as const, label: "Invited", count: list.invited || undefined },
-    { value: "alerts" as const, label: "Alerts off", count: list.alertsOff || undefined },
-  ]
 
   const q = query.trim().toLowerCase()
   const rows = list.rows.filter(
@@ -61,7 +66,7 @@ function Directory({ list }: { list: StaffListData }) {
 
   return (
     <>
-      <PillTabs label="Show" items={tabs} value={tab} onValueChange={setTab} />
+      {tabs}
       <div className="flex flex-col gap-3.5">
         <label className="flex h-13 max-w-130 items-center gap-2.5 rounded-pill bg-surface px-4.5">
           <Icon name="search" size={22} className="text-fg-2" />

@@ -178,29 +178,38 @@ export function InvoicesList() {
     { value: "payroll" as const, label: "Payroll" },
   ]
 
+  // The tabs and each tab's action: in the top bar from tablet, over the list on phone.
+  const controls = (
+    <>
+      <PillTabs label="View" items={tabs} value={tab} onValueChange={setTab} />
+      {tab === "client" ? (
+        <Button
+          variant="accent"
+          size="sm"
+          className="h-11.5 flex-1 gap-1.5 pr-5 pl-3.5 text-15 tablet:flex-none"
+          onClick={() => router.push("/admin/invoices/new")}
+        >
+          <Icon name="add" size={22} />
+          <span className="tablet:hidden">New</span>
+          <span className="hidden tablet:inline">New invoice</span>
+        </Button>
+      ) : (
+        <SendToAll />
+      )}
+    </>
+  )
+
   return (
     <AdminPage>
-      <AdminHead title="Invoices" sub="Drafted when an event's hours are approved" />
+      <AdminHead
+        title="Invoices"
+        sub="Drafted when an event's hours are approved"
+        tools={controls}
+      />
       {invoices.data && <InvoiceStats list={invoices.data} />}
-      {/* Desktop: tabs and table in one white card (Regency mockup); phone: flat on the page. */}
+      {/* Desktop: the list in one white card (Regency mockup); phone: flat on the page. */}
       <div className="flex flex-col gap-5 desktop:rounded-r24 desktop:border desktop:border-line desktop:bg-elev desktop:p-6">
-        <div className="flex items-center justify-between gap-3">
-          <PillTabs label="View" items={tabs} value={tab} onValueChange={setTab} />
-          {tab === "client" ? (
-            <Button
-              variant="accent"
-              size="sm"
-              className="h-11.5 flex-1 gap-1.5 pr-5 pl-3.5 text-15 tablet:flex-none"
-              onClick={() => router.push("/admin/invoices/new")}
-            >
-              <Icon name="add" size={22} />
-              <span className="tablet:hidden">New</span>
-              <span className="hidden tablet:inline">New invoice</span>
-            </Button>
-          ) : (
-            <SendToAll />
-          )}
-        </div>
+        <div className="flex items-center justify-between gap-3 tablet:hidden">{controls}</div>
         {tab === "client" ? <ClientInvoices /> : <PayrollLoader />}
       </div>
     </AdminPage>
