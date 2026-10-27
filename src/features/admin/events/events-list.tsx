@@ -49,10 +49,10 @@ function EventTile({ event, index }: { event: EventCard; index: number }) {
         >
           {/* Widths are the share of the headcount. */}
           <span
-            className="rounded-r9 bg-ok transition-[width] duration-600"
+            className="rounded-r9 bg-fg-3-line transition-[width] duration-600"
             style={{ width: `${onSitePct}%` }}
           />
-          <span className="rounded-r9 bg-fg opacity-80" style={{ width: `${confirmedPct}%` }} />
+          <span className="rounded-r9 bg-fg-3-line/45" style={{ width: `${confirmedPct}%` }} />
         </div>
         <div className="flex justify-between text-14 font-medium text-fg-2">
           <span>

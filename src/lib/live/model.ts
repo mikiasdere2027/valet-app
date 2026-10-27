@@ -35,13 +35,13 @@ export function slotStatus(slot: Pick<LiveSlot, "state" | "facts">): StatusSpec 
 
 /** Bar segment fill per state; open slots are hatched instead. */
 // Silver bars (client palette, ADR-020): on site silver, needs a decision mid grey, expected a
-// lighter silver, late brown; the bar's label says it in words.
+// lighter silver, late gold; the bar's label says it in words.
 export const SEGMENT_FILL: Record<Exclude<SlotState, "open">, string> = {
   onsite: "bg-fg-3-line",
   flagged: "bg-fg-3-line",
   override: "bg-fg-3-line",
   waiting: "bg-fg-3",
-  late: "bg-warn",
+  late: "bg-accent",
   due: "bg-fg-3-line/45",
   upcoming: "bg-fg-3-line/45",
 }
