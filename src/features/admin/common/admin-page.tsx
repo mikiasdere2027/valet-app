@@ -72,7 +72,7 @@ export function AdminHead({ title, sub, cta, crumb, inline = true }: AdminHeadPr
                   / {crumb.current}
                 </p>
               )}
-              <h1 className="m-0 truncate font-display text-30 leading-x110 font-bold tracking-n025">
+              <h1 className="m-0 truncate font-display text-34 leading-x100 font-bold tracking-n030">
                 {title}
               </h1>
               {sub && <span className="truncate text-14 text-fg-2">{sub}</span>}
