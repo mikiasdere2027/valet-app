@@ -90,7 +90,7 @@ export function PwaInstallBanner({ className }: BannerProps) {
             await install.prompt()
             hide()
           }}
-          className="shrink-0 rounded-pill bg-accent px-3.5 py-2 text-14 font-semibold text-accent-soft"
+          className="shrink-0 rounded-pill bg-accent px-3.5 py-2 text-14 font-semibold text-white"
         >
           Install
         </button>
@@ -117,7 +117,7 @@ export function PwaInstallBanner({ className }: BannerProps) {
         <button
           type="button"
           onClick={() => setIosOpen((v) => !v)}
-          className="shrink-0 rounded-pill bg-accent px-3.5 py-2 text-14 font-semibold text-accent-soft"
+          className="shrink-0 rounded-pill bg-accent px-3.5 py-2 text-14 font-semibold text-white"
         >
           How
         </button>
