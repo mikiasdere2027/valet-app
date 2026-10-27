@@ -66,7 +66,7 @@ function InvoiceBody({ invoice }: { invoice: InvoiceData }) {
   return (
     <div className="grid w-full max-w-260 items-start gap-5 pb-24 desktop:grid-cols-[minmax(0,1fr)_20rem] desktop:gap-6 desktop:pb-0">
       <div className="flex min-w-0 flex-col gap-5">
-        <article className="flex flex-col gap-4.5 rounded-r28 border border-line bg-elev p-5 shadow-card-line tablet:p-7">
+        <article className="flex flex-col gap-4.5 rounded-r28 border border-line bg-elev p-5 tablet:p-7">
           <div className="flex items-center justify-between gap-3 rounded-r18 bg-hero px-4.5 py-4">
             <Image
               src={BRAND_LOGO.src}

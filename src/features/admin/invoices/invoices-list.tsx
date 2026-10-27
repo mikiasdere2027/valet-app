@@ -18,8 +18,7 @@ import { PayrollStaffRow } from "./pay-stub-modal"
 
 type Tab = "client" | "payroll"
 
-const STAT_CARD =
-  "flex flex-col gap-0.5 rounded-r18 border border-line bg-elev p-3.5 shadow-card-line"
+const STAT_CARD = "flex flex-col gap-0.5 rounded-r18 border border-line bg-elev p-3.5"
 
 /** Whole dollars for the totals cards: 595078 → "$5,951". */
 const dollars = (cents: number) => `$${Math.round(cents / 100).toLocaleString("en-US")}`
@@ -184,7 +183,7 @@ export function InvoicesList() {
       <AdminHead title="Invoices" sub="Drafted when an event's hours are approved" />
       {invoices.data && <InvoiceStats list={invoices.data} />}
       {/* Desktop: tabs and table in one white card (Regency mockup); phone: flat on the page. */}
-      <div className="flex flex-col gap-5 desktop:rounded-r24 desktop:border desktop:border-line desktop:bg-elev desktop:p-6 desktop:shadow-card-line">
+      <div className="flex flex-col gap-5 desktop:rounded-r24 desktop:border desktop:border-line desktop:bg-elev desktop:p-6">
         <div className="flex items-center justify-between gap-3">
           <PillTabs label="View" items={tabs} value={tab} onValueChange={setTab} />
           {tab === "client" ? (
