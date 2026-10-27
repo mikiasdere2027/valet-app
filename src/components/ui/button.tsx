@@ -10,7 +10,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        accent: "bg-accent text-accent-ink",
+        // Regency: solid fills carry white text; the tenant accent darkened for text (>= 4.5:1).
+        accent: "bg-accent-text text-white",
         strong: "bg-fg text-bg",
         secondary: "bg-surface text-fg",
         elevated: "bg-elev text-fg",
