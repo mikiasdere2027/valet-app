@@ -32,18 +32,6 @@ export function LiveDot({ className }: { className?: string }) {
 
 const STAT_CARD = "relative flex flex-col rounded-r18 border border-line bg-elev"
 
-/**
- * Change against the same time yesterday, per pulse count. Example figures until the board
- * API returns the earlier counts (UI only, ADR-020).
- */
-export const PULSE_TREND: Record<keyof Pulse, number> = {
-  need: 2,
-  live: 1,
-  onShift: 2,
-  expected: -1,
-  open: 0,
-}
-
 /** Whether a rise is good news for the count: more crew on shift is; more people needed is not. */
 const UP_IS_GOOD: Record<keyof Pulse, boolean> = {
   need: false,
@@ -53,9 +41,23 @@ const UP_IS_GOOD: Record<keyof Pulse, boolean> = {
   open: false,
 }
 
-/** "↑ 2" in green when the change is good news, brick red when it is bad, grey when flat. */
-export function Trend({ kpi, className }: { kpi: keyof Pulse; className?: string }) {
-  const delta = PULSE_TREND[kpi]
+/**
+ * "↑ 2" since the same time yesterday: green when the change is good news, brick red when it is
+ * bad, grey when flat. Nothing when there is no snapshot from yesterday to compare (ADR-021).
+ */
+export function Trend({
+  kpi,
+  pulse,
+  yesterday,
+  className,
+}: {
+  kpi: keyof Pulse
+  pulse: Pulse
+  yesterday: Pulse | null
+  className?: string
+}) {
+  if (!yesterday) return null
+  const delta = pulse[kpi] - yesterday[kpi]
   const good = delta > 0 === UP_IS_GOOD[kpi]
   return (
     <span
@@ -84,7 +86,7 @@ export function Trend({ kpi, className }: { kpi: keyof Pulse; className?: string
  * Phone pulse (Regency mockups): the "need you" count as a tall lead card, the other four
  * counts in two rows beside it. Labels are the desktop KPI words, shortened to one line.
  */
-export function PhoneStats({ pulse }: { pulse: Pulse }) {
+export function PhoneStats({ pulse, yesterday }: { pulse: Pulse; yesterday: Pulse | null }) {
   const small: [keyof Pulse, string][] = [
     ["live", "Events live"],
     ["onShift", "On shift"],
@@ -96,7 +98,7 @@ export function PhoneStats({ pulse }: { pulse: Pulse }) {
       <div className={cn(STAT_CARD, "row-span-2 justify-between gap-1 p-3.5")}>
         <div className="flex items-center justify-between gap-1">
           <LiveDot className="text-13" />
-          <Trend kpi="need" />
+          <Trend kpi="need" pulse={pulse} yesterday={yesterday} />
         </div>
         <span className="inline-flex overflow-hidden font-display text-72 leading-x090 font-bold tracking-n050 text-bad tabular-nums">
           <span key={pulse.need} className="inline-block animate-roll">
@@ -107,7 +109,12 @@ export function PhoneStats({ pulse }: { pulse: Pulse }) {
       </div>
       {small.map(([kpi, label]) => (
         <div key={label} className={cn(STAT_CARD, "gap-0.5 p-3")}>
-          <Trend kpi={kpi} className="absolute top-2.5 right-2.5 text-12" />
+          <Trend
+            kpi={kpi}
+            pulse={pulse}
+            yesterday={yesterday}
+            className="absolute top-2.5 right-2.5 text-12"
+          />
           <span className="font-display text-24 leading-x110 font-bold tracking-n030 tabular-nums">
             {pulse[kpi]}
           </span>
