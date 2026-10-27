@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { LiveSlot } from "@/lib/data/admin/ops-schemas"
 
-import { sheetSlots, type EventSummary } from "@/lib/live/model"
-import { attentionActions, LiveDot, SlotBar, SlotRow } from "./live-parts"
+import { sheetSlots, type EventSummary, type Pulse } from "@/lib/live/model"
+import { attentionActions, LiveDot, SlotBar, SlotRow, Trend } from "./live-parts"
 import { StaffLocationModal } from "./staff-location-modal"
 import type { LiveBoard } from "./use-live-board"
 
@@ -23,18 +23,20 @@ const DAYS: { value: Day; label: string }[] = [
 function Kpi({
   value,
   label,
+  kpi,
   tone,
   first,
 }: {
   value: number
   label: string
+  kpi: keyof Pulse
   tone?: "bad"
   first?: boolean
 }) {
   return (
     <div
       className={cn(
-        "flex flex-col gap-1.5 border-r border-line last:border-r-0",
+        "relative flex flex-col gap-1.5 border-r border-line last:border-r-0",
         first ? "px-8 py-4.5" : "px-6 py-4.5",
       )}
     >
@@ -47,6 +49,7 @@ function Kpi({
         {value}
       </span>
       <span className="text-14 font-medium text-fg-2">{label}</span>
+      <Trend kpi={kpi} className="absolute top-4.5 right-5" />
     </div>
   )
 }
@@ -142,11 +145,11 @@ export function LiveDesktop({ board }: { board: LiveBoard }) {
       </header>
 
       <div className={cn(CARD, "mx-8 grid grid-cols-5 overflow-hidden")}>
-        <Kpi first value={pulse.need} label="Need you" tone="bad" />
-        <Kpi value={pulse.live} label="Events live" />
-        <Kpi value={pulse.onShift} label="On shift" />
-        <Kpi value={pulse.expected} label="Expected, not here" />
-        <Kpi value={pulse.open} label="Open slots today" />
+        <Kpi first value={pulse.need} label="Need you" kpi="need" tone="bad" />
+        <Kpi value={pulse.live} label="Events live" kpi="live" />
+        <Kpi value={pulse.onShift} label="On shift" kpi="onShift" />
+        <Kpi value={pulse.expected} label="Expected, not here" kpi="expected" />
+        <Kpi value={pulse.open} label="Open slots today" kpi="open" />
       </div>
 
       <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_21.25rem] gap-5 px-8 pt-5 pb-6">
