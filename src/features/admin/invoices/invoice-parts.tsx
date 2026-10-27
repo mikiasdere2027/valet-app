@@ -96,7 +96,7 @@ export function InvoiceDetails({
   if (rates.size === 1 && rate !== undefined) rows.push(["Bill rate", formatRate(rate)])
   if (!invoice.sent) rows.push(["Terms", "Due 14 days after sending"])
   return (
-    <dl className="m-0 flex flex-col rounded-r20 border border-line bg-elev px-4.5 py-1 shadow-card-line">
+    <dl className="m-0 flex flex-col rounded-r20 border border-line bg-elev px-4.5 py-1">
       {rows.map(([label, value]) => (
         <div
           key={label}
