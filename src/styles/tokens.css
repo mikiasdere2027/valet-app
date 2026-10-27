@@ -40,16 +40,17 @@
   --accent-soft: #f7efda;
   --accent-text: #7f611a;
 
-  /* Darkened from the export's #2A7F36 to meet 4.5:1 on --ok-soft (D11). */
-  --ok: #257a32;
-  --ok-soft: #e5f3e1;
-  --warn: #b9480e;
-  --warn-soft: #fcede2;
+  /* Regency palette (ADR-020): status keeps its icon and words; colour is ink, brown, crimson
+     or grey on light fills, all >= 4.5:1. */
+  --ok: #0e0e10;
+  --ok-soft: #ecebe8;
+  --warn: #7f611a;
+  --warn-soft: #f7efda;
   /* Website crimson. */
   --bad: #9e1b1e;
   --bad-soft: #f7eded;
-  --info: #1e5bc6;
-  --info-soft: #e6edfa;
+  --info: #5c564d;
+  --info-soft: #ecebe8;
 
   --chrome: rgba(255, 255, 255, 0.62);
   --card: rgba(255, 255, 255, 0.58);
