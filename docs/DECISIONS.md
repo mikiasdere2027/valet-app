@@ -350,6 +350,7 @@ Project-specific rules (device APIs, tokens only, component size) are ESLint rul
 **Consequences.** One family to load instead of three. Prompt is wider than Bricolage, so dense headings were checked for overflow. `src/lib/tokens/meta.ts` updated with the new light values.
 
 **Invoices screens (UI only, same ADR).** The list shows four totals (Outstanding = sent + overdue, Overdue, In draft, Paid), summed on screen from the rows the list already loads; each tab's action sits beside the tabs (New invoice; payroll's Send to all). The detail puts the number on a black logo banner with the status as a chip (read from the number label the API already sends), splits an event invoice's summary into a "what · when" row and a "time · crew" row, sets cents smaller, and highlights Total Due. On phone and tablet the invoice detail and New invoice hide the tab bar (`AppShell tabBar`) and pin their actions to the bottom edge. No API or data changes.
+
 ## ADR-021 — Live Board counts show the change since yesterday
 
 **Context.** The client asked for an up/down figure on each Live Board count (Need you, Events live, On shift, Expected, Open slots), compared with the same time yesterday. The server only knows each slot's state now: a slot's past occupant is overwritten when someone drops or is replaced, so yesterday's board cannot be rebuilt reliably from history.
