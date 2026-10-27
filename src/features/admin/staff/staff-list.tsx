@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from "react"
 
 import { Icon, PillTabs } from "@/components/shared"
+import { cn } from "@/lib/utils"
 import type { StaffBucket, StaffList as StaffListData, StaffTab } from "@/lib/data"
 
 import { AdminHead, AdminPage } from "../common/admin-page"
@@ -21,6 +22,7 @@ function inTab(tab: StaffTab, bucket: StaffBucket): boolean {
 export function StaffList() {
   const [inviteOpen, setInviteOpen] = useState(false)
   const [tab, setTab] = useState<StaffTab>("all")
+  const [query, setQuery] = useState("")
   const staff = useStaff()
   const data = staff.data
   const tabs = [
@@ -29,6 +31,25 @@ export function StaffList() {
     { value: "invited" as const, label: "Invited", count: data?.invited || undefined },
     { value: "alerts" as const, label: "Alerts off", count: data?.alertsOff || undefined },
   ]
+  // Search: in the top bar left of the tabs from tablet (like the Live Board's), over the list on phone.
+  const searchFor = (wide: boolean) => (
+    <label
+      className={cn(
+        "flex items-center gap-2 rounded-pill bg-surface text-fg-2",
+        wide ? "h-11 w-60 px-4 text-15" : "h-13 px-4.5 text-16 tablet:hidden",
+      )}
+    >
+      <Icon name="search" size={wide ? 20 : 22} />
+      <input
+        type="search"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder={data ? `Search ${data.total} staff` : "Search staff"}
+        aria-label="Search staff"
+        className="min-w-0 flex-1 border-0 bg-transparent p-0 text-fg outline-none placeholder:text-fg-3"
+      />
+    </label>
+  )
   const tabsFor = (className?: string) => (
     <PillTabs label="Show" items={tabs} value={tab} onValueChange={setTab} className={className} />
   )
@@ -43,20 +64,43 @@ export function StaffList() {
             : "…"
         }
         cta={{ label: "Invite", icon: "person_add", onClick: () => setInviteOpen(true) }}
-        tools={tabsFor()}
+        tools={
+          <>
+            {searchFor(true)}
+            {tabsFor()}
+          </>
+        }
       />
       <QueryState query={staff} rows={6}>
         {/* Phone: the filters sit under the heading; from tablet they live in the top bar. */}
-        {(list) => <Directory list={list} tab={tab} tabs={tabsFor("tablet:hidden")} />}
+        {(list) => (
+          <Directory
+            list={list}
+            tab={tab}
+            query={query}
+            tabs={tabsFor("tablet:hidden")}
+            search={searchFor(false)}
+          />
+        )}
       </QueryState>
       <InviteSheet open={inviteOpen} onOpenChange={setInviteOpen} />
     </AdminPage>
   )
 }
 
-function Directory({ list, tab, tabs }: { list: StaffListData; tab: StaffTab; tabs: ReactNode }) {
-  const [query, setQuery] = useState("")
-
+function Directory({
+  list,
+  tab,
+  query,
+  tabs,
+  search,
+}: {
+  list: StaffListData
+  tab: StaffTab
+  query: string
+  tabs: ReactNode
+  search: ReactNode
+}) {
   const q = query.trim().toLowerCase()
   const rows = list.rows.filter(
     (row) =>
@@ -68,17 +112,7 @@ function Directory({ list, tab, tabs }: { list: StaffListData; tab: StaffTab; ta
     <>
       {tabs}
       <div className="flex flex-col gap-3.5">
-        <label className="flex h-13 max-w-130 items-center gap-2.5 rounded-pill bg-surface px-4.5">
-          <Icon name="search" size={22} className="text-fg-2" />
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={`Search ${list.total} staff`}
-            aria-label="Search staff"
-            className="min-w-0 flex-1 border-0 bg-transparent p-0 text-16 text-fg outline-none placeholder:text-fg-3"
-          />
-        </label>
+        {search}
         <DataHead columns={["Name", "Status", "Next shift", "This week"]} />
         <div className="flex flex-col border-t border-line">
           {rows.map((row) => (
