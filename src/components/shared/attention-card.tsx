@@ -22,8 +22,8 @@ type AttentionCardProps = {
   /** Where, since when, how long unresolved. */
   meta: string
   /**
-   * Up to three in-place actions. Icon actions come first as round buttons; of the rest, the
-   * first is the strong one and the others are accent text.
+   * Up to three in-place actions. The first labelled one is the strong button, always on the
+   * left; the others are grey pills (icon-only when they carry an icon) to its right.
    */
   actions: [AttentionAction, AttentionAction?, AttentionAction?]
   /**
@@ -58,6 +58,8 @@ export function AttentionCard({
 }: AttentionCardProps) {
   const compact = density === "compact"
   const present = actions.filter((action): action is AttentionAction => Boolean(action))
+  const strong = present.find((action) => !action.icon)
+  const rest = present.filter((action) => action !== strong)
   return (
     <div
       className={cn(
@@ -107,34 +109,39 @@ export function AttentionCard({
           </span>
         </div>
       </div>
-      <div className={cn("flex", compact ? "gap-1.5" : "gap-2")}>
-        {present
-          .filter((action) => action.icon)
-          .map((action) => (
-            <Button
-              key={action.label}
-              variant="secondary"
-              size="compact"
-              aria-label={action.label}
-              className={cn("flex-none px-0 text-accent-text", compact ? "size-9.5" : "size-11")}
-              onClick={action.onClick}
-            >
-              {action.icon && <Icon name={action.icon} filled size={compact ? 18 : 20} />}
-            </Button>
-          ))}
-        {present
-          .filter((action) => !action.icon)
-          .map((action, i) => (
-            <Button
-              key={action.label}
-              variant={i > 0 ? "ghost" : primary === "bad" ? "destructive" : "strong"}
-              size="compact"
-              className={cn("flex-1", i > 0 && "text-accent-text", compact && "h-9.5 text-14")}
-              onClick={action.onClick}
-            >
-              {action.label}
-            </Button>
-          ))}
+      {/* Two equal columns, so the strong action is the same width on every card: it always
+          leads, and the rest (grey pills, or the round icon buttons) share the second column. */}
+      <div className={cn("grid grid-cols-2", compact ? "gap-1.5" : "gap-2")}>
+        {strong && (
+          <Button
+            variant={primary === "bad" ? "destructive" : "strong"}
+            size="compact"
+            className={cn("w-full", compact && "h-9.5 text-14")}
+            onClick={strong.onClick}
+          >
+            {strong.label}
+          </Button>
+        )}
+        {rest.length > 0 && (
+          <div className={cn("flex", compact ? "gap-1.5" : "gap-2")}>
+            {rest.map((action) => (
+              <Button
+                key={action.label}
+                variant="secondary"
+                size="compact"
+                aria-label={action.icon ? action.label : undefined}
+                className={cn("min-w-0 flex-1", action.icon && "px-0", compact && "h-9.5 text-14")}
+                onClick={action.onClick}
+              >
+                {action.icon ? (
+                  <Icon name={action.icon} filled size={compact ? 18 : 20} />
+                ) : (
+                  action.label
+                )}
+              </Button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
