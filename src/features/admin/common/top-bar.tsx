@@ -6,7 +6,7 @@ import { Icon } from "@/components/shared"
 
 /**
  * The admin top bar (Regency mockups): one full-width white bar on tablet and desktop, drawn by
- * the shell, with Back on sub-pages. Pages put their heading into it through AdminHead, which
+ * the shell and aligned left like the Live Board's, with Back on sub-pages. Pages put their heading into it through AdminHead, which
  * portals into the slot below; on phone the heading stays inline under the floating chrome.
  */
 const TopBarSlot = createContext<HTMLElement | null>(null)
@@ -28,7 +28,7 @@ type AdminTopBarProps = {
 export function AdminTopBar({ isRoot, onBack, slotRef }: AdminTopBarProps) {
   return (
     <div className="hidden border-b border-line bg-elev tablet:block">
-      <div className="mx-auto box-border flex min-h-23 w-full max-w-290 items-center gap-4 px-8 py-4.5 desktop:px-12">
+      <div className="box-border flex min-h-23 w-full items-center gap-4 px-8 py-5">
         {!isRoot && (
           <button
             type="button"
