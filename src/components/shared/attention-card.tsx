@@ -73,35 +73,39 @@ export function AttentionCard({
         <span className={cn("grid size-10 shrink-0 place-items-center rounded-pill", TONE[tone])}>
           <Icon name={icon} filled size={22} />
         </span>
-        <div className="flex min-w-0 flex-1 flex-col gap-1">
+        {/* Block, not flex: the selfie floats top right so the meta wraps under it full width. */}
+        <div className="min-w-0 flex-1">
+          {selfie && (
+            <span
+              role="img"
+              aria-label="Clock-in selfie"
+              style={selfieUrl ? { backgroundImage: `url(${selfieUrl})` } : undefined}
+              className={cn(
+                "float-right mb-1 ml-3 overflow-hidden bg-cover bg-center",
+                compact ? "size-12 rounded-r12" : "size-14 rounded-r14",
+                !selfieUrl && "grid place-items-center text-white/60 selfie-thumb",
+              )}
+            >
+              {!selfieUrl && <Icon name="face" filled size={compact ? 20 : 22} />}
+            </span>
+          )}
           <span
             className={cn(
-              "font-semibold",
+              "block font-semibold",
               compact ? "text-15 leading-x130" : "text-17 leading-x130",
             )}
           >
             {title}
           </span>
           <span
-            className={cn("text-fg-2", compact ? "text-13 leading-x140" : "text-14 leading-x135")}
+            className={cn(
+              "mt-1 block text-fg-2",
+              compact ? "text-13 leading-x140" : "text-14 leading-x135",
+            )}
           >
             {meta}
           </span>
         </div>
-        {selfie && (
-          <span
-            role="img"
-            aria-label="Clock-in selfie"
-            style={selfieUrl ? { backgroundImage: `url(${selfieUrl})` } : undefined}
-            className={cn(
-              "flex-none overflow-hidden bg-cover bg-center",
-              compact ? "size-12 rounded-r12" : "size-14 rounded-r14",
-              !selfieUrl && "grid place-items-center text-white/60 selfie-thumb",
-            )}
-          >
-            {!selfieUrl && <Icon name="face" filled size={compact ? 20 : 22} />}
-          </span>
-        )}
       </div>
       <div className={cn("flex", compact ? "gap-1.5" : "gap-2")}>
         {present
