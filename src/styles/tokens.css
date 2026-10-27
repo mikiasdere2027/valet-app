@@ -25,11 +25,12 @@
   --elev: #ffffff;
   /* Website ink. */
   --fg: #0e0e10;
-  --fg-2: #5c564d;
-  /* Website muted text: 5.6:1 on bg, 5.0:1 on surface (OPEN_QUESTIONS D11 keeps ≥ 4.5:1). */
-  --fg-3: #6d675d;
-  /* Graphics (hatch, expected segment, outline rings): warm grey, ≥ 3:1 on bg and surface. */
-  --fg-3-line: #8f8471;
+  /* Neutral greys (client palette: silver, no warm tint). */
+  --fg-2: #5e5e5b;
+  /* Muted text: 5.0:1 on bg, 4.5:1 on surface (OPEN_QUESTIONS D11 keeps ≥ 4.5:1). */
+  --fg-3: #70706c;
+  /* Graphics (hatch, expected segment, outline rings): silver, ≥ 3:1 on bg and surface. */
+  --fg-3-line: #8a8a86;
   /* Light grey hairlines for borders and dividers (client palette). */
   --line: #e6e6e3;
   --hero: #0e0e10;
@@ -49,7 +50,7 @@
   /* Website crimson. */
   --bad: #9e1b1e;
   --bad-soft: #f7eded;
-  --info: #5c564d;
+  --info: #5e5e5b;
   --info-soft: #ecebe8;
 
   --chrome: rgba(255, 255, 255, 0.62);
