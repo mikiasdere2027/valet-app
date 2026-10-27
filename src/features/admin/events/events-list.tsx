@@ -112,8 +112,16 @@ export function EventsList() {
           data ? `${data.live} live · ${data.upcoming} upcoming · ${data.short} short-staffed` : "…"
         }
         cta={{ label: "New event", icon: "add", onClick: () => router.push("/admin/events/new") }}
+        tools={<PillTabs label="Show" items={tabs} value={tab} onValueChange={setTab} />}
       />
-      <PillTabs label="Show" items={tabs} value={tab} onValueChange={setTab} />
+      {/* Phone: the filters sit under the heading; from tablet they live in the top bar. */}
+      <PillTabs
+        label="Show"
+        items={tabs}
+        value={tab}
+        onValueChange={setTab}
+        className="tablet:hidden"
+      />
       <QueryState query={events} rows={3}>
         {(list) => <Days list={list} />}
       </QueryState>

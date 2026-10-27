@@ -25,6 +25,11 @@ type AdminHeadProps = {
   crumb?: { label: string; href: string; current: string }
   /** Also draw the heading in the page on phone (default). Off when the page has its own. */
   inline?: boolean
+  /**
+   * Controls for the top bar's right side, before the action (e.g. the Events filters, like
+   * the Live Board's day chips). Tablet and up only: the page shows its own copy on phone.
+   */
+  tools?: ReactNode
 }
 
 function HeadCta({ cta }: { cta: NonNullable<AdminHeadProps["cta"]> }) {
@@ -45,7 +50,7 @@ function HeadCta({ cta }: { cta: NonNullable<AdminHeadProps["cta"]> }) {
  * Page title, one-line summary and the page's one accent action. Tablet and desktop: drawn into
  * the shell's white top bar (common/top-bar); phone: inline at the top of the page.
  */
-export function AdminHead({ title, sub, cta, crumb, inline = true }: AdminHeadProps) {
+export function AdminHead({ title, sub, cta, crumb, inline = true, tools }: AdminHeadProps) {
   const slot = useTopBarSlot()
   return (
     <>
@@ -77,7 +82,12 @@ export function AdminHead({ title, sub, cta, crumb, inline = true }: AdminHeadPr
               </h1>
               {sub && <span className="truncate text-14 text-fg-2">{sub}</span>}
             </div>
-            {cta && <HeadCta cta={cta} />}
+            {(tools || cta) && (
+              <div className="flex flex-none items-center gap-4">
+                {tools}
+                {cta && <HeadCta cta={cta} />}
+              </div>
+            )}
           </div>,
           slot,
         )}
