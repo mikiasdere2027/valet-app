@@ -56,13 +56,10 @@
   --card: rgba(255, 255, 255, 0.58);
   --sheet: rgba(255, 255, 255, 0.8);
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.75);
-  --card-line: inset 0 0 0 1px rgba(255, 255, 255, 0.9), 0 4px 18px rgba(0, 0, 0, 0.05);
-  /* Gold glow over the website's warm paper, fading to white down the screen. */
-  --ambient:
-    radial-gradient(70% 38% at 92% -4%, rgb(var(--accent-rgb) / 0.34), transparent 70%),
-    radial-gradient(55% 30% at -10% 22%, rgb(var(--accent-rgb) / 0.16), transparent 70%),
-    radial-gradient(60% 30% at 110% 70%, rgb(var(--accent-rgb) / 0.12), transparent 70%),
-    linear-gradient(180deg, #fbf8f2 0%, transparent 70%);
+  /* Clean light theme (client direction): cards are flat white with a hairline, no shadow. */
+  --card-line: none;
+  /* No glow or tint on the page ground: plain white (client direction, ADR-020). */
+  --ambient: none;
   --hero-glow: radial-gradient(
     120% 140% at 85% 110%,
     rgb(var(--accent-rgb) / 0.42),
@@ -142,11 +139,8 @@
 [data-theme="light"] [data-app="admin"],
 [data-app="admin"] [data-theme="light"] {
   --sheet: rgba(255, 255, 255, 0.82);
-  --card-line: inset 0 0 0 1px rgba(0, 0, 0, 0.05), 0 4px 18px rgba(0, 0, 0, 0.05);
-  --ambient:
-    radial-gradient(70% 38% at 92% -4%, rgb(var(--accent-rgb) / 0.3), transparent 70%),
-    radial-gradient(55% 30% at -10% 30%, rgb(var(--accent-rgb) / 0.12), transparent 70%),
-    linear-gradient(180deg, #fbf8f2 0%, transparent 70%);
+  --card-line: none;
+  --ambient: none;
 }
 
 [data-theme="dark"][data-app="admin"],
