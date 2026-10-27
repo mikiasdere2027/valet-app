@@ -350,3 +350,17 @@ Project-specific rules (device APIs, tokens only, component size) are ESLint rul
 **Consequences.** One family to load instead of three. Prompt is wider than Bricolage, so dense headings were checked for overflow. `src/lib/tokens/meta.ts` updated with the new light values.
 
 **Invoices screens (UI only, same ADR).** The list shows four totals (Outstanding = sent + overdue, Overdue, In draft, Paid), summed on screen from the rows the list already loads; each tab's action sits beside the tabs (New invoice; payroll's Send to all). The detail puts the number on a black logo banner with the status as a chip (read from the number label the API already sends), splits an event invoice's summary into a "what · when" row and a "time · crew" row, sets cents smaller, and highlights Total Due. On phone and tablet the invoice detail and New invoice hide the tab bar (`AppShell tabBar`) and pin their actions to the bottom edge. No API or data changes.
+## ADR-021 — Live Board counts show the change since yesterday
+
+**Context.** The client asked for an up/down figure on each Live Board count (Need you, Events live, On shift, Expected, Open slots), compared with the same time yesterday. The server only knows each slot's state now: a slot's past occupant is overwritten when someone drops or is replaced, so yesterday's board cannot be rebuilt reliably from history.
+
+**Decision.**
+
+- **Snapshots, not replay.** `pulse_snapshots` (migration 011) holds the five counts per tenant. `recordPulse` saves them at most every 5 minutes, from each Live Board load and from `GET /api/cron/pulse` (`CRON_SECRET`, like retention) so quiet hours are covered. The counts come from `deriveBoard`, the same function the browser uses, so they always match the board.
+- **Matching.** `GET /api/admin/live` gains `yesterday`: the snapshot closest to exactly 24 hours ago, within ±15 minutes, or `null`. With `null` the board shows no arrow, not a fake "no change".
+- **Retention.** Snapshots older than 8 days are deleted on each save.
+- **Colour.** The arrow is green when the change is good news for that count (more on shift, fewer needing you) and brick red when it is bad; grey when flat. The words ("Up 2 since yesterday") are the accessible name.
+- Snapshot failures are logged and never fail the board.
+- The demo (mock repo) has no history, so it reports today's counts less a fixed example change.
+
+**Consequences.** Real arrows appear one day after deploy. A scheduler must call `/api/cron/pulse` every 5 minutes for full coverage; without it, snapshots exist only for times someone had the board open.

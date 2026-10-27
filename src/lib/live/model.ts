@@ -2,7 +2,7 @@
 // events and slots (their states and facts). Pure and shared: the server counts what needs the
 // dispatcher for the navigation badge, the screens render it. Wording is built from facts
 // (minutes late, distance outside, who dropped), never stored as prose.
-import type { LiveEvent, LiveSlot, SlotState } from "@/lib/data/admin/ops-schemas"
+import type { LiveEvent, LiveSlot, Pulse, SlotState } from "@/lib/data/admin/ops-schemas"
 import type { IconName } from "@/lib/icons/icon-names"
 import type { StatusSpec } from "@/lib/status/presets"
 
@@ -110,7 +110,7 @@ export type AttentionItem = {
   actions: { id: ActionId; label: string }[]
 }
 
-export type Pulse = { need: number; live: number; onShift: number; expected: number; open: number }
+export type { Pulse }
 
 /** Unfilled events inside this many minutes of starting raise an alert (the "4-hour alert"). */
 export const UNFILLED_ALERT_MIN = 4 * 60

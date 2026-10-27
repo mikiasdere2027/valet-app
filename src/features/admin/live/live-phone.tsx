@@ -99,7 +99,7 @@ export function LivePhone({ board }: { board: LiveBoard }) {
         </div>
 
         <h1 className="sr-only">Live Board</h1>
-        <PhoneStats pulse={pulse} />
+        <PhoneStats pulse={pulse} yesterday={board.yesterday} />
 
         <UnderlineTabs
           label="Live Board view"
