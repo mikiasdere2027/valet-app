@@ -19,9 +19,9 @@
   color-scheme: light;
 
   --bg: #ffffff;
-  /* Website ivory / soft line: warm fills for cards, fields and secondary buttons. */
-  --surface: #f6f1e7;
-  --surface-2: #eee6d6;
+  /* Light grey fills for fields, secondary buttons and selection (client palette: no ivory). */
+  --surface: #f4f4f2;
+  --surface-2: #ececea;
   --elev: #ffffff;
   /* Website ink. */
   --fg: #0e0e10;
@@ -30,8 +30,8 @@
   --fg-3: #6d675d;
   /* Graphics (hatch, expected segment, outline rings): warm grey, ≥ 3:1 on bg and surface. */
   --fg-3-line: #8f8471;
-  /* Website card border. */
-  --line: #e8dfcc;
+  /* Light grey hairlines for borders and dividers (client palette). */
+  --line: #e6e6e3;
   --hero: #0e0e10;
 
   --accent: #c9a24a;
@@ -53,11 +53,12 @@
   --info-soft: #ecebe8;
 
   --chrome: rgba(255, 255, 255, 0.62);
-  --card: rgba(255, 255, 255, 0.58);
+  /* Clean light theme: cards are solid white (no glow behind them to show through). */
+  --card: #ffffff;
   --sheet: rgba(255, 255, 255, 0.8);
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.75);
-  /* Clean light theme (client direction): cards are flat white with a hairline, no shadow. */
-  --card-line: none;
+  /* Clean light theme (client direction): a hairline stroke, no drop shadow. */
+  --card-line: inset 0 0 0 1px var(--line);
   /* No glow or tint on the page ground: plain white (client direction, ADR-020). */
   --ambient: none;
   --hero-glow: radial-gradient(
@@ -139,7 +140,7 @@
 [data-theme="light"] [data-app="admin"],
 [data-app="admin"] [data-theme="light"] {
   --sheet: rgba(255, 255, 255, 0.82);
-  --card-line: none;
+  --card-line: inset 0 0 0 1px var(--line);
   --ambient: none;
 }
 
