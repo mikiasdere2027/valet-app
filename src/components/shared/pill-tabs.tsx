@@ -14,7 +14,7 @@ type PillTabsProps<T extends string> = {
 }
 
 /**
- * Admin page filters (Admin Pages "tabs"): 40 px pills styled like the Live Board's day chips
+ * Admin page filters (Admin Pages "tabs"): 40 px, 10 px corners, styled like the Live Board's day chips
  * (Regency brand: the selected one is the accent tint with an accent ring, the rest plain
  * text), with an optional count bubble. A single-select button group; the selection is `aria-pressed`.
  */
@@ -40,7 +40,7 @@ export function PillTabs<T extends string>({
             aria-pressed={on}
             onClick={() => onValueChange(item.value)}
             className={cn(
-              "flex h-10 flex-none items-center gap-1.5 rounded-pill border-0 px-4 text-15 transition-[background-color,color] duration-200",
+              "flex h-10 flex-none items-center gap-1.5 rounded-r10 border-0 px-3.5 text-16 transition-[background-color,color] duration-200",
               on
                 ? "bg-accent-soft font-semibold text-accent-text shadow-[inset_0_0_0_1.5px_var(--accent)]"
                 : "bg-transparent font-medium text-fg-2 hover:bg-surface",
