@@ -63,7 +63,7 @@ export function AttentionCard({
       className={cn(
         "flex flex-col",
         variant === "glass" && "rounded-card glass-card",
-        variant === "solid" && "border border-line bg-elev shadow-card-line",
+        variant === "solid" && "border border-line bg-elev",
         compact ? "gap-3 rounded-r20 p-4" : "gap-3.5 p-4.5",
         variant === "solid" && !compact && "rounded-card",
         className,
